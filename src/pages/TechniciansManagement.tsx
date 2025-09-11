@@ -163,7 +163,10 @@ const TechniciansManagement: React.FC = () => {
                       <Button
                         size="small"
                         variant="outlined"
-                        onClick={() => setSelectedTechnician(tech)}
+                        onClick={() => {
+                          setSelectedTechnician(tech);
+                          setIsEditModalOpen(false);
+                        }}
                         sx={{ mr: 1 }}
                       >
                         View
@@ -172,7 +175,10 @@ const TechniciansManagement: React.FC = () => {
                         size="small"
                         variant="contained"
                         color="secondary"
-                        onClick={() => handleOpenEditModal(tech.id)}
+                        onClick={() => {
+                          setSelectedTechnician(tech);
+                          setIsEditModalOpen(true);
+                        }}
                       >
                         Edit
                       </Button>
@@ -251,38 +257,58 @@ const TechniciansManagement: React.FC = () => {
         </DialogTitle>
         <DialogContent>
           {selectedTechnician && (
-            <Box sx={{ py: 2 }}>
-              <Typography variant="body1" gutterBottom>
-                <strong>Name:</strong> {selectedTechnician.name}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Email:</strong> {selectedTechnician.email}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Mobile:</strong> {selectedTechnician.mobile}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Status:</strong> {selectedTechnician.status}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Address:</strong> {selectedTechnician.address}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Join Date:</strong> {selectedTechnician.joinDate}
-              </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Assigned Leads:</strong> {selectedTechnician.assignedLeads || 0}
-              </Typography>
-              {selectedTechnician.specialization && (
-                <Typography variant="body1" gutterBottom>
-                  <strong>Specialization:</strong> {selectedTechnician.specialization}
+            <Box sx={{ 
+              py: 2,
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: 3,
+              '& .detail-item': {
+                p: 2,
+                borderRadius: 1,
+                bgcolor: 'background.paper',
+                boxShadow: 1
+              }
+            }}>
+              <Box className="detail-item">
+                <Typography variant="overline" color="primary" gutterBottom>Personal Information</Typography>
+                <Typography variant="h6" gutterBottom>{selectedTechnician.name}</Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  {selectedTechnician.email}<br />
+                  {selectedTechnician.mobile}
                 </Typography>
-              )}
-              {selectedTechnician.experience && (
-                <Typography variant="body1" gutterBottom>
-                  <strong>Experience:</strong> {selectedTechnician.experience} years
+              </Box>
+              
+              <Box className="detail-item">
+                <Typography variant="overline" color="primary" gutterBottom>Status & Role</Typography>
+                <Typography variant="h6" gutterBottom>
+                  {selectedTechnician.status}
                 </Typography>
-              )}
+                <Typography variant="body2" color="text.secondary">
+                  Assigned Leads: {selectedTechnician.assignedLeads || 0}
+                </Typography>
+              </Box>
+
+              <Box className="detail-item">
+                <Typography variant="overline" color="primary" gutterBottom>Location</Typography>
+                <Typography variant="body1">{selectedTechnician.address || 'No address provided'}</Typography>
+              </Box>
+
+              <Box className="detail-item">
+                <Typography variant="overline" color="primary" gutterBottom>Employment Details</Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Join Date: {selectedTechnician.joinDate}
+                </Typography>
+                {selectedTechnician.specialization && (
+                  <Typography variant="body2" color="text.secondary" gutterBottom>
+                    Specialization: {selectedTechnician.specialization}
+                  </Typography>
+                )}
+                {selectedTechnician.experience && (
+                  <Typography variant="body2" color="text.secondary">
+                    Experience: {selectedTechnician.experience} years
+                  </Typography>
+                )}
+              </Box>
             </Box>
           )}
         </DialogContent>
