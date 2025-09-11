@@ -1,22 +1,19 @@
 import { type FC, type ReactElement } from 'react';
 import { ListItemIcon, ListItemText, ListItemButton, Collapse } from '@mui/material';
-import {
-  SupervisorAccount,
-  People,
-  ShoppingCart,
-  Inventory,
-  Assessment,
-  Settings,
-  ExpandLess,
-  ExpandMore,
-  Person,
-  Store,
-  Payment,
-  Security,
-  Dashboard,
-} from '@mui/icons-material';
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import PeopleIcon from '@mui/icons-material/People';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PersonIcon from '@mui/icons-material/Person';
+import StoreIcon from '@mui/icons-material/Store';
+import PaymentIcon from '@mui/icons-material/Payment';
+import SecurityIcon from '@mui/icons-material/Security';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 interface ManagerItem {
   id: string;
@@ -38,28 +35,35 @@ export const managers: ManagerItem[] = [
   {
     id: 'dashboard',
     title: 'Dashboard',
-    icon: <Dashboard />,
+  icon: <DashboardIcon />,
     resource: 'dashboard',
+    requiredAction: 'read'
+  },
+  {
+    id: 'technicians',
+    title: 'Technicians Manager',
+  icon: <PeopleIcon />,
+    resource: 'technicians-manager',
     requiredAction: 'read'
   },
   {
     id: 'user',
     title: 'User Manager',
-    icon: <People />,
+  icon: <PeopleIcon />,
     resource: 'user-manager',
     requiredAction: 'read',
     subItems: [
       { 
         id: 'users-list',
         title: 'Users List',
-        icon: <Person />,
+  icon: <PersonIcon />,
         resource: 'user-manager',
         requiredAction: 'read'
       },
       { 
         id: 'roles',
         title: 'Roles & Permissions',
-        icon: <SupervisorAccount />,
+  icon: <SupervisorAccountIcon />,
         resource: 'user-manager',
         requiredAction: 'admin'
       }
@@ -68,21 +72,21 @@ export const managers: ManagerItem[] = [
   {
     id: 'inventory',
     title: 'Inventory Manager',
-    icon: <Inventory />,
+  icon: <InventoryIcon />,
     resource: 'inventory-manager',
     requiredAction: 'read',
     subItems: [
       { 
         id: 'products',
         title: 'Products',
-        icon: <ShoppingCart />,
+  icon: <ShoppingCartIcon />,
         resource: 'inventory-manager',
         requiredAction: 'read'
       },
       { 
         id: 'stock',
         title: 'Stock Management',
-        icon: <Store />,
+  icon: <StoreIcon />,
         resource: 'inventory-manager',
         requiredAction: 'write'
       }
@@ -91,21 +95,21 @@ export const managers: ManagerItem[] = [
   {
     id: 'finance',
     title: 'Finance Manager',
-    icon: <Assessment />,
+  icon: <AssessmentIcon />,
     resource: 'finance-manager',
     requiredAction: 'read',
     subItems: [
       { 
         id: 'transactions',
         title: 'Transactions',
-        icon: <Payment />,
+  icon: <PaymentIcon />,
         resource: 'finance-manager',
         requiredAction: 'read'
       },
       { 
         id: 'reports',
         title: 'Reports',
-        icon: <Assessment />,
+  icon: <AssessmentIcon />,
         resource: 'finance-manager',
         requiredAction: 'write'
       }
@@ -114,14 +118,14 @@ export const managers: ManagerItem[] = [
   {
     id: 'security',
     title: 'Security Settings',
-    icon: <Security />,
+  icon: <SecurityIcon />,
     resource: 'security-manager',
     requiredAction: 'admin'
   },
   {
     id: 'settings',
     title: 'System Settings',
-    icon: <Settings />,
+  icon: <SettingsIcon />,
     resource: 'system-settings',
     requiredAction: 'admin'
   }
@@ -135,30 +139,18 @@ interface SidebarItemProps {
 
 export const SidebarItem: FC<SidebarItemProps> = ({ item, selected, onSelect }) => {
   const [open, setOpen] = useState(false);
-  const { hasPermission } = useAuth();
-
-  // Check if the user has permission for this item
-  const hasItemPermission = hasPermission(item.resource, item.requiredAction);
-
-  // Check permissions for sub-items
-  const availableSubItems = item.subItems?.filter(subItem => 
-    hasPermission(subItem.resource, subItem.requiredAction)
-  );
-
-  // If neither the item nor its subitems are accessible, don't render anything
-  if (!hasItemPermission && (!availableSubItems || availableSubItems.length === 0)) {
-    return null;
-  }
+  // Show all managers and subItems to every user
+  const availableSubItems = item.subItems || [];
 
   const handleClick = () => {
-    if (availableSubItems && availableSubItems.length > 0) {
+    if (availableSubItems.length > 0) {
       setOpen(!open);
     }
     onSelect(item.id);
   };
 
   const isSelected = selected === item.id || 
-    availableSubItems?.some(subItem => selected === subItem.id);
+    availableSubItems.some(subItem => selected === subItem.id);
 
   return (
     <>
@@ -169,9 +161,9 @@ export const SidebarItem: FC<SidebarItemProps> = ({ item, selected, onSelect }) 
       >
         <ListItemIcon>{item.icon}</ListItemIcon>
         <ListItemText primary={item.title} />
-        {availableSubItems && availableSubItems.length > 0 && (open ? <ExpandLess /> : <ExpandMore />)}
+  {availableSubItems.length > 0 && (open ? <ExpandLessIcon /> : <ExpandMoreIcon />)}
       </ListItemButton>
-      {availableSubItems && availableSubItems.length > 0 && (
+      {availableSubItems.length > 0 && (
         <Collapse in={open} timeout="auto" unmountOnExit>
           {availableSubItems.map((subItem) => (
             <ListItemButton

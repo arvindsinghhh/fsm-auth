@@ -1,4 +1,4 @@
-import { User } from '../types/auth';
+import { Permission, User } from '../types/auth';
 
 export const checkPermission = (user: User | null, resource: string, requiredAction: 'read' | 'write' | 'delete' | 'admin'): boolean => {
   if (!user) return false;

@@ -1,50 +1,21 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { Login } from '../pages/Login';
-import { Signup } from '../pages/Signup';
-import { ForgotPassword } from '../pages/ForgotPassword';
-import { Dashboard } from '../pages/Dashboard';
-import { TechniciansPage } from '../pages/TechniciansPage';
-import { useAuth } from '../context/AuthContext';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import TechnicianList from '../pages/TechniciansManagement';
+import TechnicianDetail from '../pages/TechnicianDetail';
+import AddTechnician from '../pages/AddTechnician';
+import EditTechnician from '../pages/EditTechnician';
+import LeadActions from '../pages/LeadActions';
 
-const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
-  const { isAuthenticated } = useAuth();
+const AppRoutes = () => (
+	<Routes>
+		<Route path="/technicians" element={<TechnicianList />} />
+		<Route path="/technicians/add" element={<AddTechnician />} />
+		<Route path="/technicians/:id" element={<TechnicianDetail />} />
+		<Route path="/technicians/:id/edit" element={<EditTechnician />} />
+		<Route path="/technicians/:id/leads" element={<TechnicianDetail />} />
+		<Route path="/leads/:leadId/actions" element={<LeadActions />} />
+		{/* ...other routes... */}
+	</Routes>
+);
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
-
-export const AppRoutes = () => {
-  return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-
-      {/* Protected Routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/technicians"
-        element={
-          <ProtectedRoute>
-            <TechniciansPage />
-          </ProtectedRoute>
-        }
-      />
-      {/* Add other manager routes here */}
-      
-      {/* Default Route */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-    </Routes>
-  );
-};
+export default AppRoutes;

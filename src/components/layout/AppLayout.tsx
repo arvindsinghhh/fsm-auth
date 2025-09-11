@@ -16,29 +16,17 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  ListItemButton
+  ListItemButton,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  Dashboard,
-  Person,
-  Group,
-  Work,
-  Label,
-  Assignment,
-  Receipt,
-  Email,
-  Notifications,
-  Assessment,
-  Description,
   ChevronLeft,
-  ExitToApp
+  ExitToApp,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { managers, SidebarItem } from '../Managers';
 
 const DRAWER_WIDTH = 280;
-
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -126,7 +114,6 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>

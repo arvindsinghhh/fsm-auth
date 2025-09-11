@@ -40,50 +40,71 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const hasPermission = useCallback((resource: string, action: 'read' | 'write' | 'delete' | 'admin'): boolean => {
     return checkPermission(user, resource, action);
   }, [user]);
-const login = useCallback(async (email: string, password: string) => {
-  try {
-    setIsLoading(true);
 
-    // Call your real API (replace with axios/fetch based on your setup)
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      throw new Error("Login failed");
+  const login = useCallback(async (email: string, password: string) => {
+    try {
+      setIsLoading(true);
+      // Mock API call - replace with your actual API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock successful login with roles and permissions
+      const mockUser: User = {
+        id: '1',
+        email: email,
+        userName: 'Mock User',
+        profileImage: '',
+        roleId: '1',
+        admin: true,
+        roles: [
+          {
+            id: '1',
+            name: 'Admin',
+            permissions: [
+              {
+                resource: 'dashboard',
+                actions: ['read', 'write', 'admin']
+              },
+              {
+                resource: 'user-manager',
+                actions: ['read', 'write', 'delete', 'admin']
+              },
+              {
+                resource: 'inventory-manager',
+                actions: ['read', 'write', 'delete', 'admin']
+              },
+              {
+                resource: 'finance-manager',
+                actions: ['read', 'write', 'delete', 'admin']
+              },
+              {
+                resource: 'security-manager',
+                actions: ['read', 'write', 'delete', 'admin']
+              },
+              {
+                resource: 'system-settings',
+                actions: ['read', 'write', 'delete', 'admin']
+              }
+            ]
+          }
+        ]
+      };
+      
+      setUser(mockUser);
+      setIsAuthenticated(true);
+      setUserPermissions(getUserPermissions(mockUser));
+      
+      // Store token in localStorage - replace with your actual token
+      localStorage.setItem('token', 'mock-jwt-token');
+      
+      toast.success('Successfully logged in!');
+      navigate('/dashboard');
+    } catch (error) {
+      toast.error('Failed to login. Please try again.');
+      console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
     }
-
-    const data = await response.json();
-
-    // The backend should return user + token
-    const loggedInUser: User = {
-      id: data.user.id,
-      email: data.user.email,
-      userName: data.user.userName,
-      roleId: data.user.roleId,
-      admin: data.user.admin,
-      roles: data.user.roles, // include roles + permissions
-    };
-
-    setUser(loggedInUser);
-    setIsAuthenticated(true);
-    setUserPermissions(getUserPermissions(loggedInUser));
-
-    // Save JWT or session token
-    localStorage.setItem("token", data.token);
-
-    toast.success("Successfully logged in!");
-    navigate("/dashboard");
-  } catch (error) {
-    toast.error("Failed to login. Please try again.");
-    console.error("Login error:", error);
-  } finally {
-    setIsLoading(false);
-  }
-}, [navigate]);
-
+  }, [navigate]);
 
   const signup = useCallback(async (email: string, password: string, name: string) => {
     try {

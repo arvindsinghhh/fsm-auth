@@ -1,9 +1,11 @@
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import axios from "axios";
+
 import { User } from "../types/auth";
 import { checkPermission, getUserPermissions, isAdmin as checkIsAdmin } from "../services/permissionService";
-import axios from "axios";
+import { API_ENDPOINTS } from "../apis/api";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -11,7 +13,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string, name: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   hasPermission: (resource: string, action: "read" | "write" | "delete" | "admin") => boolean;
   userPermissions: { [key: string]: Array<"read" | "write" | "delete" | "admin"> };
@@ -23,9 +25,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within an AuthProvider");
   return context;
 };
 
@@ -40,98 +40,131 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [userPermissions, setUserPermissions] = useState<{ [key: string]: Array<"read" | "write" | "delete" | "admin"> }>({});
   const navigate = useNavigate();
 
+  // Persist user + tokens in localStorage
+  const persistSession = (userData: User, tokens: { access_token: string; refresh_token: string; token_type?: string }) => {
+    setUser(userData);
+    setIsAuthenticated(true);
+    setUserPermissions(getUserPermissions(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("access_token", tokens.access_token);
+    localStorage.setItem("refresh_token", tokens.refresh_token);
+    localStorage.setItem("token_type", tokens.token_type?.trim() || "Bearer");
+  };
+
+  // Login
   const login = useCallback(async (email: string, password: string) => {
     try {
       setIsLoading(true);
-
-      const response = await axios.post(
-        "http://192.168.1.40:8765/api/admin-service/auth/login",
-        { email, password },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
+      const response = await axios.post(API_ENDPOINTS.AUTH.LOGIN, { email, password });
       const { successful, data, message } = response.data;
-
       if (!successful) {
         toast.error(message || "Login failed");
         return;
       }
-
-      // Map API response to your User type
-      const userData: User = {
+      // Build user object from API response
+      const userData = {
         id: data.id,
         email,
         userName: data.userName,
         profileImage: data.profileImage,
         roleId: data.roleId,
         admin: data.admin,
-        roles: [
-          {
-            id: data.roleId,
-            name: data.admin ? "Admin" : "User",
-            permissions: [], // extend later if needed
-          },
-        ],
+        roles: [], // roles should be fetched from another endpoint if needed
       };
-
-      setUser(userData);
-      setIsAuthenticated(true);
-      setUserPermissions(getUserPermissions(userData));
-
-      // Store tokens
-      localStorage.setItem("access_token", data.access_token);
-      localStorage.setItem("refresh_token", data.refresh_token);
-      localStorage.setItem("token_type", data.token_type?.trim() || "Bearer");
-
+      persistSession(userData, {
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        token_type: data.token_type || "Bearer"
+      });
       toast.success(message || "Login successful!");
       navigate("/dashboard");
-    } catch (error: any) {
-      console.error("Login error:", error);
-      toast.error(error.response?.data?.message || "Invalid credentials");
+    } catch (error) {
+      const err = error as any;
+      console.error("Login error:", err);
+      toast.error(err.response?.data?.message || "Invalid credentials");
     } finally {
       setIsLoading(false);
     }
   }, [navigate]);
 
-  // 👇 Auto-login when app reloads
+  // Auto-login on refresh
+//   useEffect(() => {
+//     const token = localStorage.getItem("access_token");
+//     const tokenType = localStorage.getItem("token_type") || "Bearer";
+//     const storedUser = localStorage.getItem("user");
+
+//     if (token && storedUser) {
+//       setUser(JSON.parse(storedUser));
+//       setIsAuthenticated(true);
+//       setUserPermissions(getUserPermissions(JSON.parse(storedUser)));
+//     } else if (token) {
+//       (async () => {
+//         try {
+//           setIsLoading(true);
+//           const response = await axios.get(API_ENDPOINTS.AUTH.ME, {
+//             headers: { Authorization: `${tokenType} ${token}` },
+//           });
+//           const data = response.data;
+//           const currentUser: User = { ...data };
+//           persistSession(currentUser, { access_token: token, refresh_token: localStorage.getItem("refresh_token") || "", token_type: tokenType });
+//         } catch (err) {
+//           console.error("Auto-login failed:", err);
+//           localStorage.clear();
+//         } finally {
+//           setIsLoading(false);
+//         }
+//       })();
+//     }
+//   }, []);
+
+
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     const tokenType = localStorage.getItem("token_type") || "Bearer";
-
+    const storedUser = localStorage.getItem("user");
+    if (token && storedUser) {
+      // Restore session from localStorage
+      setUser(JSON.parse(storedUser));
+      setIsAuthenticated(true);
+      setUserPermissions(getUserPermissions(JSON.parse(storedUser)));
+    }
+    // Set axios default header for all requests
     if (token) {
-      (async () => {
-        try {
-          setIsLoading(true);
-          const response = await axios.get("http://localhost:8765/api/admin-service/auth/me", {
-            headers: { Authorization: `${tokenType} ${token}` },
-          });
-
-          const data = response.data;
-          const currentUser: User = {
-            id: data.id,
-            email: data.email,
-            userName: data.userName,
-            profileImage: data.profileImage,
-            roleId: data.roleId,
-            admin: data.admin,
-            roles: data.roles || [],
-          };
-
-          setUser(currentUser);
-          setIsAuthenticated(true);
-          setUserPermissions(getUserPermissions(currentUser));
-        } catch (err) {
-          console.error("Auto-login failed:", err);
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-          localStorage.removeItem("token_type");
-        } finally {
-          setIsLoading(false);
-        }
-      })();
+      axios.defaults.headers.common["Authorization"] = `${tokenType} ${token}`;
     }
   }, []);
 
+  // Logout
+  const logout = useCallback(async () => {
+    const token = localStorage.getItem("access_token");
+    const tokenType = localStorage.getItem("token_type") || "Bearer";
+    try {
+      setIsLoading(true);
+      if (token) {
+        await axios.post(API_ENDPOINTS.AUTH.LOGOUT, {}, { headers: { Authorization: `${tokenType} ${token}` } });
+        toast.success("Successfully logged out!");
+      }
+      setUser(null);
+      setIsAuthenticated(false);
+      setUserPermissions({});
+      localStorage.clear();
+      delete axios.defaults.headers.common["Authorization"];
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout error:", err);
+      toast.error("Logout failed, clearing local session anyway.");
+      setUser(null);
+      setIsAuthenticated(false);
+      setUserPermissions({});
+      localStorage.clear();
+      delete axios.defaults.headers.common["Authorization"];
+      navigate("/login");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [navigate]);
+
+  // Signup
   const signup = useCallback(async (email: string, password: string, name: string) => {
     try {
       setIsLoading(true);
@@ -146,17 +179,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, [navigate]);
 
-  const logout = useCallback(() => {
-    setUser(null);
-    setIsAuthenticated(false);
-    setUserPermissions({});
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
-    localStorage.removeItem("token_type");
-    toast.success("Successfully logged out!");
-    navigate("/login");
-  }, [navigate]);
-
+  // Forgot password
   const forgotPassword = useCallback(async (email: string) => {
     try {
       setIsLoading(true);
@@ -171,29 +194,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, [navigate]);
 
-  const hasPermission = useCallback((resource: string, action: "read" | "write" | "delete" | "admin"): boolean => {
-    return checkPermission(user, resource, action);
-  }, [user]);
-
-  const isAdmin = useCallback((): boolean => {
-    return checkIsAdmin(user);
-  }, [user]);
+  const hasPermission = useCallback((resource: string, action: "read" | "write" | "delete" | "admin") => checkPermission(user, resource, action), [user]);
+  const isAdmin = useCallback(() => checkIsAdmin(user), [user]);
 
   const updateUserRoles = useCallback(async (userId: string, roles: string[]) => {
     try {
-      if (!isAdmin()) {
-        throw new Error("Unauthorized: Only administrators can update user roles");
-      }
-
+      if (!isAdmin()) throw new Error("Unauthorized: Only administrators can update user roles");
       setIsLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success("User roles updated successfully");
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("Failed to update user roles");
-      }
+      toast.error(error instanceof Error ? error.message : "Failed to update user roles");
       console.error("Update user roles error:", error);
     } finally {
       setIsLoading(false);
@@ -201,21 +212,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, [isAdmin]);
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        user,
-        isLoading,
-        login,
-        signup,
-        logout,
-        forgotPassword,
-        hasPermission,
-        userPermissions,
-        updateUserRoles,
-        isAdmin,
-      }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, user, isLoading, login, signup, logout, forgotPassword, hasPermission, userPermissions, updateUserRoles, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
