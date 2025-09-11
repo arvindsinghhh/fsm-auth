@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
   AppBar,
-  Avatar,
-  Box,
+   Box,
   Button,
   Card,
   CardContent,
@@ -110,21 +109,21 @@ export const Dashboard = () => {
           elevation={1}
         >
           <Toolbar>
-            {isMobile && (
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
+              {/* {isMobile && (
+                <IconButton
+                  color="inherit"
+                  aria-label="open drawer"
+                  edge="start"
+                  onClick={handleDrawerToggle}
+                  sx={{ mr: 2 }}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )} */}
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Dashboard
             </Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Avatar sx={{ bgcolor: 'primary.main' }}>
                 {user?.email?.[0]?.toUpperCase()}
               </Avatar>
@@ -139,7 +138,7 @@ export const Dashboard = () => {
               >
                 Logout
               </Button>
-            </Box>
+            </Box> */}
           </Toolbar>
         </AppBar>
 
