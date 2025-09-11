@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Permission, User } from '../types/auth';
 
 export const checkPermission = (user: User | null, resource: string, requiredAction: 'read' | 'write' | 'delete' | 'admin'): boolean => {

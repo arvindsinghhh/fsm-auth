@@ -10,6 +10,8 @@ export interface Technician {
   address?: string;
   availability?: string;
   completedJobs?: number;
+  specialization?: string;
+  experience?: string;
 }
 
 export interface Lead {

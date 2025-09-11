@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -11,35 +11,37 @@ import {
   CircularProgress,
   SelectChangeEvent,
 } from '@mui/material';
-import { editTechnician, fetchTechnicianDetail } from '../services/technicianService';
-import { Technician } from '../types/technician';
+import { addTechnician } from '../services/technicianService';
 
-interface EditTechnicianProps {
-  technicianId: string;
+interface TechnicianFormData {
+  name: string;
+  email: string;
+  mobile: string;
+  status: 'Active' | 'Inactive';
+  address: string;
+  specialization: string;
+  experience: string;
+  joinDate: string;
+}
+
+interface AddTechnicianProps {
   onSuccess: () => void;
   onCancel: () => void;
 }
 
-const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess, onCancel }) => {
+const AddTechnician: React.FC<AddTechnicianProps> = ({ onSuccess, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState<Partial<Technician>>({});
-
-  useEffect(() => {
-    const loadTechnician = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchTechnicianDetail(technicianId);
-        setFormData(data.technician);
-      } catch (err) {
-        setError('Failed to load technician details');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTechnician();
-  }, [technicianId]);
+  const [formData, setFormData] = useState<TechnicianFormData>({
+    name: '',
+    email: '',
+    mobile: '',
+    status: 'Active',
+    address: '',
+    specialization: '',
+    experience: '',
+    joinDate: new Date().toISOString().split('T')[0]
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -68,22 +70,14 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
     }
 
     try {
-      await editTechnician(technicianId, formData);
+      await addTechnician(formData);
       onSuccess();
     } catch (err) {
-      setError('Failed to update technician. Please check your input and try again.');
+      setError('Failed to add technician. Please check your input and try again.');
     } finally {
       setLoading(false);
     }
   };
-
-  if (loading && !formData.id) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
 
   return (
     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
@@ -100,7 +94,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             fullWidth
             label="Full Name"
             name="name"
-            value={formData.name || ''}
+            value={formData.name}
             onChange={handleInputChange}
           />
           <TextField
@@ -109,7 +103,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             label="Email"
             name="email"
             type="email"
-            value={formData.email || ''}
+            value={formData.email}
             onChange={handleInputChange}
           />
         </Box>
@@ -120,14 +114,14 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             fullWidth
             label="Mobile Number"
             name="mobile"
-            value={formData.mobile || ''}
+            value={formData.mobile}
             onChange={handleInputChange}
           />
           <FormControl fullWidth required>
             <InputLabel>Status</InputLabel>
             <Select
               name="status"
-              value={formData.status || 'Active'}
+              value={formData.status}
               label="Status"
               onChange={handleSelectChange}
             >
@@ -143,7 +137,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
           name="address"
           multiline
           rows={3}
-          value={formData.address || ''}
+          value={formData.address}
           onChange={handleInputChange}
         />
 
@@ -152,7 +146,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             fullWidth
             label="Specialization"
             name="specialization"
-            value={formData.specialization || ''}
+            value={formData.specialization}
             onChange={handleInputChange}
             helperText="e.g., Electrical, Plumbing, HVAC"
           />
@@ -161,7 +155,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             label="Experience (years)"
             name="experience"
             type="number"
-            value={formData.experience || ''}
+            value={formData.experience}
             onChange={handleInputChange}
             inputProps={{ min: 0 }}
           />
@@ -173,7 +167,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             label="Join Date"
             name="joinDate"
             type="date"
-            value={formData.joinDate || ''}
+            value={formData.joinDate}
             onChange={handleInputChange}
             InputLabelProps={{
               shrink: true,
@@ -196,7 +190,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             disabled={loading}
             startIcon={loading ? <CircularProgress size={20} /> : null}
           >
-            Update Technician
+            Add Technician
           </Button>
         </Box>
       </Box>
@@ -204,4 +198,4 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
   );
 };
 
-export default EditTechnician;
+export default AddTechnician;

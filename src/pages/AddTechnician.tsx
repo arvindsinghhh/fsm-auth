@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { addTechnician } from '../services/technicianService';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
-  Card,
-  CardContent,
-  Typography,
   TextField,
   Button,
   FormControl,
@@ -16,7 +12,7 @@ import {
   CircularProgress,
   SelectChangeEvent,
 } from '@mui/material';
-import { Stack } from '@mui/material';
+
 
 interface TechnicianFormData {
   name: string;
@@ -29,8 +25,12 @@ interface TechnicianFormData {
   joinDate: string;
 }
 
-const AddTechnician: React.FC = () => {
-  const navigate = useNavigate();
+interface AddTechnicianProps {
+  onSuccess: () => void;
+  onCancel: () => void;
+}
+
+const AddTechnician: React.FC<AddTechnicianProps> = ({ onSuccess, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState<TechnicianFormData>({
@@ -72,7 +72,7 @@ const AddTechnician: React.FC = () => {
 
     try {
       await addTechnician(formData);
-      navigate('/technicians');
+      onSuccess();
     } catch (err) {
       setError('Failed to add technician. Please check your input and try again.');
     } finally {
@@ -81,143 +81,121 @@ const AddTechnician: React.FC = () => {
   };
 
   return (
-    <Card sx={{ maxWidth: 800, margin: 'auto', mt: 4 }}>
-      <CardContent>
-        <Typography variant="h5" gutterBottom>
-          Add New Technician
-        </Typography>
+    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
+      {error && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <Stack spacing={3}>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <Box flex={1}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Full Name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                />
-              </Box>
-              <Box flex={1}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-              </Box>
-            </Stack>
-
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <Box flex={1}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Mobile Number"
-                  name="mobile"
-                  value={formData.mobile}
-                  onChange={handleInputChange}
-                />
-              </Box>
-              <Box flex={1}>
-                <FormControl fullWidth required>
-                  <InputLabel>Status</InputLabel>
-                  <Select
-                    name="status"
-                    value={formData.status}
-                    label="Status"
-                    onChange={handleSelectChange}
-                  >
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-            </Stack>
-
-            <Box>
-              <TextField
-                fullWidth
-                label="Address"
-                name="address"
-                multiline
-                rows={3}
-                value={formData.address}
-                onChange={handleInputChange}
-              />
-            </Box>
-
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <Box flex={1}>
-                <TextField
-                  fullWidth
-                  label="Specialization"
-                  name="specialization"
-                  value={formData.specialization}
-                  onChange={handleInputChange}
-                  helperText="e.g., Electrical, Plumbing, HVAC"
-                />
-              </Box>
-              <Box flex={1}>
-                <TextField
-                  fullWidth
-                  label="Experience (years)"
-                  name="experience"
-                  type="number"
-                  value={formData.experience}
-                  onChange={handleInputChange}
-                  inputProps={{ min: 0 }}
-                />
-              </Box>
-            </Stack>
-
-            <Box sx={{ maxWidth: { sm: '50%' } }}>
-              <TextField
-                fullWidth
-                label="Join Date"
-                name="joinDate"
-                type="date"
-                value={formData.joinDate}
-                onChange={handleInputChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </Box>
-          </Stack>
-
-          <Box sx={{ mt: 3, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
-            <Button
-              variant="outlined"
-              onClick={() => navigate('/technicians')}
-              disabled={loading}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              disabled={loading}
-              startIcon={loading ? <CircularProgress size={20} /> : null}
-            >
-              Add Technician
-            </Button>
-          </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+          <TextField
+            required
+            fullWidth
+            label="Full Name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+          />
+          <TextField
+            required
+            fullWidth
+            label="Email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
         </Box>
-      </CardContent>
-    </Card>
+
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+          <TextField
+            required
+            fullWidth
+            label="Mobile Number"
+            name="mobile"
+            value={formData.mobile}
+            onChange={handleInputChange}
+          />
+          <FormControl fullWidth required>
+            <InputLabel>Status</InputLabel>
+            <Select
+              name="status"
+              value={formData.status}
+              label="Status"
+              onChange={handleSelectChange}
+            >
+              <MenuItem value="Active">Active</MenuItem>
+              <MenuItem value="Inactive">Inactive</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+
+        <TextField
+          fullWidth
+          label="Address"
+          name="address"
+          multiline
+          rows={3}
+          value={formData.address}
+          onChange={handleInputChange}
+        />
+
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+          <TextField
+            fullWidth
+            label="Specialization"
+            name="specialization"
+            value={formData.specialization}
+            onChange={handleInputChange}
+            helperText="e.g., Electrical, Plumbing, HVAC"
+          />
+          <TextField
+            fullWidth
+            label="Experience (years)"
+            name="experience"
+            type="number"
+            value={formData.experience}
+            onChange={handleInputChange}
+            inputProps={{ min: 0 }}
+          />
+        </Box>
+
+        <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
+          <TextField
+            fullWidth
+            label="Join Date"
+            name="joinDate"
+            type="date"
+            value={formData.joinDate}
+            onChange={handleInputChange}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Box>
+
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+          <Button
+            variant="outlined"
+            onClick={onCancel}
+            disabled={loading}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={loading}
+            startIcon={loading ? <CircularProgress size={20} /> : null}
+          >
+            Add Technician
+          </Button>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
