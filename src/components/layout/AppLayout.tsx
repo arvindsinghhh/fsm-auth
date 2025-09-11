@@ -72,7 +72,12 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         padding: 2,
         justifyContent: 'space-between'
       }}>
-        <Typography variant="h6" noWrap>
+         <Typography
+      variant="h6"
+      noWrap
+      sx={{ cursor: "pointer" }}
+      onClick={() => navigate("/dashboard")}
+    >
           FSM Admin
         </Typography>
         {isMobile && (

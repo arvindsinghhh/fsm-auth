@@ -102,45 +102,7 @@ export const Dashboard = () => {
       {/* Sidebar removed – Dashboard is now standalone */}
 
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar 
-          position="fixed" 
-          sx={{ width: '100%' }}
-          color="transparent" 
-          elevation={1}
-        >
-          <Toolbar>
-              {/* {isMobile && (
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  edge="start"
-                  onClick={handleDrawerToggle}
-                  sx={{ mr: 2 }}
-                >
-                  <MenuIcon />
-                </IconButton>
-              )} */}
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Dashboard
-            </Typography>
-            {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Avatar sx={{ bgcolor: 'primary.main' }}>
-                {user?.email?.[0]?.toUpperCase()}
-              </Avatar>
-              <Typography variant="subtitle1" sx={{ mr: 2 }}>
-                {user?.email}
-              </Typography>
-              <Button
-                variant="outlined"
-                color="error"
-                startIcon={<ExitToApp />}
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            </Box> */}
-          </Toolbar>
-        </AppBar>
+      
 
         {/* Main Content */}
         <Box 
