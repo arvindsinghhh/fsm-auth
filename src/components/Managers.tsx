@@ -7,6 +7,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import SettingsIcon from '@mui/icons-material/Settings';
+import BuildIcon from '@mui/icons-material/Build';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PersonIcon from '@mui/icons-material/Person';
@@ -40,6 +41,13 @@ export const managers: ManagerItem[] = [
     requiredAction: 'read'
   },
   {
+    id: 'technicians',
+    title: 'Technicians Manager',
+    icon: <PeopleIcon />,
+    resource: 'technicians-manager',
+    requiredAction: 'read'
+  },
+  {
     id: 'front-office',
     title: 'Front Office Manager',
     icon: <SupervisorAccountIcon />,
@@ -54,95 +62,96 @@ export const managers: ManagerItem[] = [
     requiredAction: 'read'
   },
   {
-    id: 'technicians',
-    title: 'Technicians Manager',
-    icon: <PeopleIcon />,
-    resource: 'technicians-manager',
+    id: 'job-types',
+    title: 'Job Type Manager',
+    icon: <BuildIcon />,
+    resource: 'job-type-manager',
     requiredAction: 'read'
   },
-  {
-    id: 'user',
-    title: 'User Manager',
-  icon: <PeopleIcon />,
-    resource: 'user-manager',
-    requiredAction: 'read',
-    subItems: [
-      { 
-        id: 'users-list',
-        title: 'Users List',
-  icon: <PersonIcon />,
-        resource: 'user-manager',
-        requiredAction: 'read'
-      },
-      { 
-        id: 'roles',
-        title: 'Roles & Permissions',
-  icon: <SupervisorAccountIcon />,
-        resource: 'user-manager',
-        requiredAction: 'admin'
-      }
-    ]
-  },
-  {
-    id: 'inventory',
-    title: 'Inventory Manager',
-  icon: <InventoryIcon />,
-    resource: 'inventory-manager',
-    requiredAction: 'read',
-    subItems: [
-      { 
-        id: 'products',
-        title: 'Products',
-  icon: <ShoppingCartIcon />,
-        resource: 'inventory-manager',
-        requiredAction: 'read'
-      },
-      { 
-        id: 'stock',
-        title: 'Stock Management',
-  icon: <StoreIcon />,
-        resource: 'inventory-manager',
-        requiredAction: 'write'
-      }
-    ]
-  },
-  {
-    id: 'finance',
-    title: 'Finance Manager',
-  icon: <AssessmentIcon />,
-    resource: 'finance-manager',
-    requiredAction: 'read',
-    subItems: [
-      { 
-        id: 'transactions',
-        title: 'Transactions',
-  icon: <PaymentIcon />,
-        resource: 'finance-manager',
-        requiredAction: 'read'
-      },
-      { 
-        id: 'reports',
-        title: 'Reports',
-  icon: <AssessmentIcon />,
-        resource: 'finance-manager',
-        requiredAction: 'write'
-      }
-    ]
-  },
-  {
-    id: 'security',
-    title: 'Security Settings',
-  icon: <SecurityIcon />,
-    resource: 'security-manager',
-    requiredAction: 'admin'
-  },
-  {
-    id: 'settings',
-    title: 'System Settings',
-  icon: <SettingsIcon />,
-    resource: 'system-settings',
-    requiredAction: 'admin'
-  }
+  
+  // {
+  //   id: 'user',
+  //   title: 'User Manager',
+  // icon: <PeopleIcon />,
+  //   resource: 'user-manager',
+  //   requiredAction: 'read',
+  //   subItems: [
+  //     { 
+  //       id: 'users-list',
+  //       title: 'Users List',
+  // icon: <PersonIcon />,
+  //       resource: 'user-manager',
+  //       requiredAction: 'read'
+  //     },
+  //     { 
+  //       id: 'roles',
+  //       title: 'Roles & Permissions',
+  // icon: <SupervisorAccountIcon />,
+  //       resource: 'user-manager',
+  //       requiredAction: 'admin'
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: 'inventory',
+  //   title: 'Inventory Manager',
+  // icon: <InventoryIcon />,
+  //   resource: 'inventory-manager',
+  //   requiredAction: 'read',
+  //   subItems: [
+  //     { 
+  //       id: 'products',
+  //       title: 'Products',
+  // icon: <ShoppingCartIcon />,
+  //       resource: 'inventory-manager',
+  //       requiredAction: 'read'
+  //     },
+  //     { 
+  //       id: 'stock',
+  //       title: 'Stock Management',
+  // icon: <StoreIcon />,
+  //       resource: 'inventory-manager',
+  //       requiredAction: 'write'
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: 'finance',
+  //   title: 'Finance Manager',
+  // icon: <AssessmentIcon />,
+  //   resource: 'finance-manager',
+  //   requiredAction: 'read',
+  //   subItems: [
+  //     { 
+  //       id: 'transactions',
+  //       title: 'Transactions',
+  // icon: <PaymentIcon />,
+  //       resource: 'finance-manager',
+  //       requiredAction: 'read'
+  //     },
+  //     { 
+  //       id: 'reports',
+  //       title: 'Reports',
+  // icon: <AssessmentIcon />,
+  //       resource: 'finance-manager',
+  //       requiredAction: 'write'
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: 'security',
+  //   title: 'Security Settings',
+  // icon: <SecurityIcon />,
+  //   resource: 'security-manager',
+  //   requiredAction: 'admin'
+  // },
+  // {
+  //   id: 'settings',
+  //   title: 'System Settings',
+  // icon: <SettingsIcon />,
+  //   resource: 'system-settings',
+  //   requiredAction: 'admin'
+  // }
 ];
 
 interface SidebarItemProps {
