@@ -47,6 +47,13 @@ export const managers: ManagerItem[] = [
     requiredAction: 'read'
   },
   {
+    id: 'customers',
+    title: 'Customer Manager',
+    icon: <PeopleIcon />,
+    resource: 'customer-manager',
+    requiredAction: 'read'
+  },
+  {
     id: 'technicians',
     title: 'Technicians Manager',
     icon: <PeopleIcon />,

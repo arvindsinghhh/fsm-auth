@@ -47,6 +47,7 @@ const TechniciansManagement: React.FC = () => {
     loadTechnicians();
   }, [loadTechnicians]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleOpenEditModal = async (techId: string) => {
     try {
       const response = await fetchTechnicianDetail(techId);
