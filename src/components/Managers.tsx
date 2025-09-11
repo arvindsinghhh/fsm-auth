@@ -37,7 +37,7 @@ export const managers: ManagerItem[] = [
     id: 'dashboard',
     title: 'Dashboard',
   icon: <DashboardIcon />,
-    resource: 'dashboard',
+    resource: 'Dashboard',
     requiredAction: 'read'
   },
   {

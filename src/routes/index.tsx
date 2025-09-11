@@ -6,7 +6,8 @@ import LeadActions from '../pages/LeadActions';
 import FrontOfficeManager from '../pages/FrontOfficeManager';
 import CustomerManager from '../pages/CustomerManager';
 import JobTypeManager from '../pages/JobTypeManager';
-
+import { Dashboard } from '../pages/Dashboard';
+ 
 const AppRoutes = () => (
   <Routes>
     <Route path="/front-office" element={<FrontOfficeManager />} />
@@ -16,7 +17,7 @@ const AppRoutes = () => (
     <Route path="/technicians/:id" element={<TechnicianDetail />} />
     <Route path="/technicians/:id/leads" element={<TechnicianDetail />} />
     <Route path="/leads/:leadId/actions" element={<LeadActions />} />
-    {/* ...other routes... */}
+	    <Route path="/dashboard" element={<Dashboard/>} />
   </Routes>
 );
 
