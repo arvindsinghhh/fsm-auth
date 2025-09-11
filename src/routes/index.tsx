@@ -3,9 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import TechniciansManagement from '../pages/TechniciansManagement';
 import TechnicianDetail from '../pages/TechnicianDetail';
 import LeadActions from '../pages/LeadActions';
+import FrontOfficeManager from '../pages/FrontOfficeManager';
 
 const AppRoutes = () => (
   <Routes>
+    <Route path="/front-office" element={<FrontOfficeManager />} />
     <Route path="/technicians" element={<TechniciansManagement />} />
     <Route path="/technicians/:id" element={<TechnicianDetail />} />
     <Route path="/technicians/:id/leads" element={<TechnicianDetail />} />

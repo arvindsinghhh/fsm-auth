@@ -40,9 +40,16 @@ export const managers: ManagerItem[] = [
     requiredAction: 'read'
   },
   {
+    id: 'front-office',
+    title: 'Front Office Manager',
+    icon: <SupervisorAccountIcon />,
+    resource: 'front-office-manager',
+    requiredAction: 'read'
+  },
+  {
     id: 'technicians',
     title: 'Technicians Manager',
-  icon: <PeopleIcon />,
+    icon: <PeopleIcon />,
     resource: 'technicians-manager',
     requiredAction: 'read'
   },
