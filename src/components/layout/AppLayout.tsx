@@ -11,17 +11,13 @@ import {
   IconButton,
   ListItemIcon,
   ListItemText,
-  useTheme,
-  useMediaQuery,
   Avatar,
   Menu,
   MenuItem,
+  useTheme,
+  useMediaQuery,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  ChevronLeft,
-  ExitToApp,
-} from '@mui/icons-material';
+import { Menu as MenuIcon, ChevronLeft, ExitToApp } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { managers, SidebarItem } from '../Managers';
 
@@ -34,50 +30,34 @@ interface AppLayoutProps {
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
   const { user, logout } = useAuth();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleProfileMenuClose = () => {
-    setAnchorEl(null);
-  };
-
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+  const handleProfileMenuClose = () => setAnchorEl(null);
   const handleLogout = () => {
     handleProfileMenuClose();
     logout();
   };
-
   const handleNavigate = (path: string) => {
     navigate(path);
-    if (isMobile) {
-      setMobileOpen(false);
-    }
+    if (isMobile) setMobileOpen(false);
   };
 
   const drawer = (
     <Box sx={{ overflow: 'auto' }}>
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        padding: 2,
-        justifyContent: 'space-between'
-      }}>
-         <Typography
-      variant="h6"
-      noWrap
-      sx={{ cursor: "pointer" }}
-      onClick={() => navigate("/dashboard")}
-    >
+      <Box sx={{ display: 'flex', alignItems: 'center', p: 2, justifyContent: 'space-between' }}>
+        <Typography
+          variant="h6"
+          noWrap
+          sx={{ cursor: 'pointer' }}
+          onClick={() => navigate('/dashboard')}
+        >
           FSM Admin
         </Typography>
         {isMobile && (
@@ -108,53 +88,73 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
           ml: { md: `${DRAWER_WIDTH}px` },
           bgcolor: 'background.paper',
-          color: 'text.primary'
+          color: 'text.primary',
         }}
         elevation={1}
       >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
-          <IconButton onClick={handleProfileMenuOpen}>
-            <Avatar sx={{ bgcolor: 'primary.main' }}>
-              {user?.email?.[0]?.toUpperCase()}
-            </Avatar>
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleProfileMenuClose}
-            PaperProps={{
-              sx: { minWidth: 200 }
-            }}
-          >
-            <MenuItem disabled>
-              <Typography variant="subtitle2" noWrap>
-                {user?.email}
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
+          {/* Left: Logo + Hamburger for mobile */}
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {isMobile && (
+              <Typography
+                variant="h6"
+                noWrap
+                sx={{ cursor: 'pointer', mr: 1 }}
+                onClick={() => navigate('/dashboard')}
+              >
+                FSM Admin
               </Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleLogout}>
-              <ListItemIcon>
-                <ExitToApp fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </MenuItem>
-          </Menu>
+            )}
+            {isMobile && (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+          </Box>
+
+          {/* Right: Avatar */}
+          <Box sx={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
+            <IconButton
+              onClick={handleProfileMenuOpen}
+              sx={{ p: 0 }} // remove extra padding to keep position stable
+            >
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
+                {user?.email?.[0]?.toUpperCase()}
+              </Avatar>
+            </IconButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleProfileMenuClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+              PaperProps={{ sx: { minWidth: 200 } }}
+            >
+              <MenuItem disabled>
+                <Typography variant="subtitle2" noWrap>
+                  {user?.email}
+                </Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <ExitToApp fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
 
-      <Box
-        component="nav"
-        sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}
-      >
+      {/* Sidebar */}
+      <Box component="nav" sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}>
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -162,22 +162,17 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: DRAWER_WIDTH,
-            },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DRAWER_WIDTH },
           }}
         >
           {drawer}
         </Drawer>
+
         <Drawer
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: DRAWER_WIDTH,
-            },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DRAWER_WIDTH },
           }}
           open
         >
@@ -185,13 +180,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </Drawer>
       </Box>
 
+      {/* Main Content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
           width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-          mt: '64px'
+          mt: '64px',
         }}
       >
         {children}
