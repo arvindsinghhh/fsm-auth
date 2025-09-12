@@ -8,6 +8,7 @@ export const API_ENDPOINTS = {
     FORGOT_PASSWORD: '/auth/forgot-password',
     RESET_PASSWORD: '/auth/reset-password',
     PROFILE: '/auth/profile',
+    ME: '/auth/me',
   },
   JOB_TYPES: '/job-types',
   FRONT_OFFICE: '/front-office',

@@ -20,7 +20,8 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle
+    DialogTitle,
+    CircularProgress
 } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as ViewIcon } from '@mui/icons-material';
 import { staticContentService, StaticContent, StaticContentListRequest } from '../services/staticContentService';
@@ -36,7 +37,7 @@ const StaticContentList: React.FC = () => {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedContentId, setSelectedContentId] = useState<number | null>(null);
 
-    const fetchContents = async () => {
+    const fetchContents = React.useCallback(async () => {
         try {
             setLoading(true);
             const params: StaticContentListRequest = {
@@ -59,11 +60,11 @@ const StaticContentList: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [page, rowsPerPage, searchText]);
 
     useEffect(() => {
         fetchContents();
-    }, [page, rowsPerPage, searchText]);
+    }, [fetchContents]);
 
     const handleChangePage = (_: unknown, newPage: number) => {
         setPage(newPage);
@@ -105,6 +106,14 @@ const StaticContentList: React.FC = () => {
         setDeleteDialogOpen(false);
         setSelectedContentId(null);
     };
+
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     return (
         <Box sx={{ p: 3 }}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     Box,
@@ -8,7 +8,6 @@ import {
     CircularProgress,
     Chip,
     Alert,
-    Grid as MuiGrid,
     Divider,
 } from '@mui/material';
 import { Edit as EditIcon } from '@mui/icons-material';
@@ -21,23 +20,31 @@ const StaticContentView: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        fetchContent();
-    }, [id]);
-
-    const fetchContent = async () => {
-        if (!id) return;
+    const fetchContent = React.useCallback(async () => {
+        if (!id) {
+            console.log('No ID provided');
+            return;
+        }
         try {
             setLoading(true);
+            console.log('Fetching content for ID:', id);
             const data = await staticContentService.getContentById(Number(id));
+            console.log('Received data:', data);
             setContent(data);
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error fetching content:', error);
             setError('Failed to load content');
+            if (error?.response) {
+                console.log('Error response:', error.response.status, error.response.data);
+            }
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        fetchContent();
+    }, [fetchContent]);
 
     if (loading) {
         return (
@@ -73,7 +80,7 @@ const StaticContentView: React.FC = () => {
                     variant="contained"
                     color="primary"
                     startIcon={<EditIcon />}
-                    onClick={() => navigate(`/admin/static-contents/edit/${id}`)}
+                    onClick={() => navigate(`/static-content/edit/${id}`)}
                 >
                     Edit Content
                 </Button>
@@ -141,7 +148,7 @@ const StaticContentView: React.FC = () => {
                             Meta Keywords
                         </Typography>
                         <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', mt: 1 }}>
-                            {content.metaKeywords.map((keyword, index) => (
+                            {content.metaKeywords.map((keyword: string, index: number) => (
                                 <Chip
                                     key={index}
                                     label={keyword}
@@ -185,7 +192,7 @@ const StaticContentView: React.FC = () => {
             </Paper>
 
             <Box mt={3}>
-                <Button variant="outlined" onClick={() => navigate('/admin/static-contents')}>
+                <Button variant="outlined" onClick={() => navigate('/static-content')}>
                     Back to List
                 </Button>
             </Box>

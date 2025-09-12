@@ -11,7 +11,7 @@ import {
     IconButton,
     Alert
 } from '@mui/material';
-import { Add as AddIcon, Clear as ClearIcon } from '@mui/icons-material';
+import { Add as AddIcon } from '@mui/icons-material';
 import { staticContentService, StaticContent } from '../services/staticContentService';
 
 const StaticContentForm: React.FC = () => {
@@ -30,13 +30,8 @@ const StaticContentForm: React.FC = () => {
         metaKeywords: []
     });
 
-    useEffect(() => {
-        if (id) {
-            fetchContent();
-        }
-    }, [id]);
-
-    const fetchContent = async () => {
+    const fetchContent = React.useCallback(async () => {
+        if (!id) return;
         try {
             setLoading(true);
             const data = await staticContentService.getContentById(Number(id));
@@ -47,7 +42,13 @@ const StaticContentForm: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [id]);
+
+    useEffect(() => {
+        if (id) {
+            fetchContent();
+        }
+    }, [id, fetchContent]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -80,7 +81,7 @@ const StaticContentForm: React.FC = () => {
             setLoading(true);
             setError(null);
             await staticContentService.addContent(content);
-            navigate('/admin/static-contents');
+            navigate('/static-content');
         } catch (error) {
             console.error('Error saving content:', error);
             setError('Failed to save content');
@@ -197,7 +198,7 @@ const StaticContentForm: React.FC = () => {
                         </Button>
                         <Button
                             variant="outlined"
-                            onClick={() => navigate('/admin/static-contents')}
+                            onClick={() => navigate('/static-content')}
                         >
                             Cancel
                         </Button>

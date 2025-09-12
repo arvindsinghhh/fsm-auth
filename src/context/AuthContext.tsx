@@ -77,7 +77,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         token_type: data.token_type || "Bearer"
       });
       toast.success(message || "Login successful!");
-      navigate("/dashboard");
+      
+      // Get the redirect path from localStorage or default to dashboard
+      const redirectPath = localStorage.getItem("redirectPath") || "/dashboard";
+      localStorage.removeItem("redirectPath"); // Clear it after use
+      navigate(redirectPath, { replace: true });
     } catch (error) {
       const err = error as any;
       console.error("Login error:", err);
@@ -122,17 +126,51 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const token = localStorage.getItem("access_token");
     const tokenType = localStorage.getItem("token_type") || "Bearer";
     const storedUser = localStorage.getItem("user");
+
     if (token && storedUser) {
-      // Restore session from localStorage
-      setUser(JSON.parse(storedUser));
+      // First restore from localStorage immediately to prevent flash
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
       setIsAuthenticated(true);
-      setUserPermissions(getUserPermissions(JSON.parse(storedUser)));
-    }
-    // Set axios default header for all requests
-    if (token) {
+      setUserPermissions(getUserPermissions(parsedUser));
+      
+      // Set axios default header for all requests
       axios.defaults.headers.common["Authorization"] = `${tokenType} ${token}`;
+
+      // Then validate the token with the backend
+      (async () => {
+        try {
+          setIsLoading(true);
+          const response = await axios.get(API_ENDPOINTS.AUTH.ME, {
+            headers: { Authorization: `${tokenType} ${token}` },
+          });
+          
+          // If the token is valid, update user data from the backend
+          if (response.data) {
+            const currentUser: User = { ...response.data };
+            setUser(currentUser);
+            setIsAuthenticated(true);
+            setUserPermissions(getUserPermissions(currentUser));
+            // Update stored user data
+            localStorage.setItem("user", JSON.stringify(currentUser));
+          }
+        } catch (err) {
+          console.error("Session validation failed:", err);
+          // Only clear if it's an auth error (401/403)
+          if (axios.isAxiosError(err) && (err.response?.status === 401 || err.response?.status === 403)) {
+            setUser(null);
+            setIsAuthenticated(false);
+            setUserPermissions({});
+            localStorage.clear();
+            delete axios.defaults.headers.common["Authorization"];
+            navigate("/login");
+          }
+        } finally {
+          setIsLoading(false);
+        }
+      })();
     }
-  }, []);
+  }, [navigate]);
 
   // Logout
   const logout = useCallback(async () => {

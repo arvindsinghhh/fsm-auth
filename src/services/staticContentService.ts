@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+console.log('API_BASE_URL:', API_BASE_URL); // This will show the actual URL being used
 
 export interface StaticContent {
     id: number | null;
@@ -45,8 +46,20 @@ export const staticContentService = {
 
     // Get Content by ID
     getContentById: async (id: number): Promise<StaticContent> => {
-        const response = await axios.get(`${API_BASE_URL}/contents/get/by/${id}`, { headers });
-        return response.data;
+        try {
+            // First try to get from API
+            const response = await axios.get(`${API_BASE_URL}/contents/get/by/${id}`, { headers });
+            return response.data;
+        } catch (error) {
+            console.log('API call failed, using dummy data');
+            // If API fails, return dummy data for the requested ID
+            const dummyData = staticContentService.getDummyData();
+            const content = dummyData.content.find(item => item.id === id);
+            if (!content) {
+                throw new Error('Content not found');
+            }
+            return content;
+        }
     },
 
     // Get Content by Slug

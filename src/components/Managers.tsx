@@ -3,17 +3,9 @@ import { ListItemIcon, ListItemText, ListItemButton, Collapse } from '@mui/mater
 import { useState } from 'react';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import PeopleIcon from '@mui/icons-material/People';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import SettingsIcon from '@mui/icons-material/Settings';
 import BuildIcon from '@mui/icons-material/Build';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PersonIcon from '@mui/icons-material/Person';
-import StoreIcon from '@mui/icons-material/Store';
-import PaymentIcon from '@mui/icons-material/Payment';
-import SecurityIcon from '@mui/icons-material/Security';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ArticleIcon from '@mui/icons-material/Article';
 
