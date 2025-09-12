@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Box,
     Paper,
@@ -27,16 +28,11 @@ import {
     MenuItem,
     Divider
 } from '@mui/material';
-import { 
-    Add as AddIcon, 
-    Edit as EditIcon, 
-    Delete as DeleteIcon, 
-    Visibility as ViewIcon,
-    Close as CloseIcon 
-} from '@mui/icons-material';
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as ViewIcon, Close as CloseIcon } from '@mui/icons-material';
 import { staticContentService, StaticContent, StaticContentListRequest } from '../services/staticContentService';
 
 const StaticContentList: React.FC = () => {
+    const navigate = useNavigate();
     const [contents, setContents] = useState<StaticContent[]>([]);
     const [totalElements, setTotalElements] = useState(0);
     const [page, setPage] = useState(0);
@@ -78,7 +74,7 @@ const StaticContentList: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [page, rowsPerPage, searchText]);
+    }, [page, rowsPerPage, searchText, dateRange]);
 
     useEffect(() => {
         fetchContents();
@@ -137,17 +133,12 @@ const StaticContentList: React.FC = () => {
 
     const handleSave = async (content: StaticContent) => {
         try {
-            if (!content.title || !content.description || !content.metaTitle || !content.metaDescription) {
-                setError('Please fill in all required fields');
-                return;
-            }
             setLoading(true);
             await staticContentService.addContent(content);
             fetchContents();
             setIsAddModalOpen(false);
             setIsEditModalOpen(false);
             setSelectedContent(null);
-            setError(null);
         } catch (error) {
             console.error('Error saving content:', error);
             setError('Failed to save content');
@@ -218,18 +209,7 @@ const StaticContentList: React.FC = () => {
                             variant="contained"
                             color="primary"
                             fullWidth
-                            onClick={() => {
-                                setSelectedContent({
-                                    id: null,
-                                    title: '',
-                                    description: '',
-                                    metaTitle: '',
-                                    metaDescription: '',
-                                    metaKeywords: [],
-                                    active: true
-                                });
-                                setIsAddModalOpen(true);
-                            }}
+                            onClick={() => setIsAddModalOpen(true)}
                             sx={{ 
                                 height: '40px',
                                 bgcolor: '#546FFF',
@@ -313,7 +293,6 @@ const StaticContentList: React.FC = () => {
                                                     }
                                                 }}
                                                 onClick={() => handleOpenView(content)}
-                                                startIcon={<ViewIcon />}
                                             >
                                                 View
                                             </Button>
@@ -322,7 +301,6 @@ const StaticContentList: React.FC = () => {
                                                 variant="contained"
                                                 color="secondary"
                                                 onClick={() => handleOpenEdit(content)}
-                                                startIcon={<EditIcon />}
                                             >
                                                 Edit
                                             </Button>
@@ -476,11 +454,6 @@ const StaticContentList: React.FC = () => {
                             {isEditModalOpen ? 'Update' : 'Create'}
                         </Button>
                     </DialogActions>
-                    {error && (
-                        <Box sx={{ p: 2, color: 'error.main', textAlign: 'center' }}>
-                            {error}
-                        </Box>
-                    )}
                 </Dialog>
 
                 {/* View Dialog */}
@@ -622,7 +595,6 @@ const StaticContentList: React.FC = () => {
                     </DialogActions>
                 </Dialog>
 
-                {/* Delete Dialog */}
                 <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
                     <DialogTitle>Confirm Delete</DialogTitle>
                     <DialogContent>
