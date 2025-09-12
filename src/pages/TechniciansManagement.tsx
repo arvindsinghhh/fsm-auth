@@ -257,7 +257,37 @@ const TechniciansManagement: React.FC = () => {
                         variant="contained"
                         color="secondary"
                         onClick={() => {
-                          setSelectedTechnician(tech);
+                          // Create dummy data for editing
+                          setSelectedTechnician({
+                            ...tech,
+                            availability: 'Available' as const,
+                            activeJobsCount: 3,
+                            completedJobs: 45,
+                            rating: 4.5,
+                            totalFeedbacks: 38,
+                            assignedLeads: [
+                              {
+                                id: 'JOB001',
+                                title: 'AC Repair',
+                                customerName: 'John Doe',
+                                status: 'In Progress' as const,
+                                date: '2025-09-12',
+                                customerFeedback: undefined
+                              },
+                              {
+                                id: 'JOB002',
+                                title: 'Electrical Maintenance',
+                                customerName: 'Jane Smith',
+                                status: 'Completed' as const,
+                                date: '2025-09-10',
+                                customerFeedback: {
+                                  rating: 5,
+                                  comment: 'Excellent service, very professional',
+                                  date: '2025-09-10'
+                                }
+                              }
+                            ]
+                          });
                           setIsEditModalOpen(true);
                         }}
                       >
@@ -311,7 +341,7 @@ const TechniciansManagement: React.FC = () => {
           </IconButton>
         </DialogTitle>
         <DialogContent>
-          {selectedTechnician && (
+          {selectedTechnician?.id && (
             <EditTechnician
               technicianId={selectedTechnician.id}
               onSuccess={handleSuccess}

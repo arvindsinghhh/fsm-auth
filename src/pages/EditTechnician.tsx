@@ -29,8 +29,31 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
     const loadTechnician = async () => {
       try {
         setLoading(true);
-        const data = await fetchTechnicianDetail(technicianId);
-        setFormData(data.technician);
+        // Create a base form data with required fields
+        const baseFormData = {
+          name: '',
+          email: '',
+          mobile: '',
+          status: 'Active' as const,
+          address: ''
+        };
+
+        try {
+          const data = await fetchTechnicianDetail(technicianId);
+          setFormData({
+            ...baseFormData,
+            ...data.technician,
+            // Ensure required fields have values even if API doesn't return them
+            name: data.technician?.name || '',
+            email: data.technician?.email || '',
+            mobile: data.technician?.mobile || '',
+            status: data.technician?.status || 'Active',
+            address: data.technician?.address || ''
+          });
+        } catch (apiError) {
+          console.error('API Error:', apiError);
+          setFormData(baseFormData);
+        }
       } catch (err) {
         setError('Failed to load technician details');
       } finally {
