@@ -7,6 +7,7 @@ import FrontOfficeManager from '../pages/FrontOfficeManager';
 import CustomerManager from '../pages/CustomerManager';
 import JobTypeManager from '../pages/JobTypeManager';
 import { Dashboard } from '../pages/Dashboard';
+import StaticPage from '../pages/StaticPage';
  
 const AppRoutes = () => (
   <Routes>
@@ -17,7 +18,10 @@ const AppRoutes = () => (
     <Route path="/technicians/:id" element={<TechnicianDetail />} />
     <Route path="/technicians/:id/leads" element={<TechnicianDetail />} />
     <Route path="/leads/:leadId/actions" element={<LeadActions />} />
-	    <Route path="/dashboard" element={<Dashboard/>} />
+    <Route path="/dashboard" element={<Dashboard/>} />
+    
+    {/* Static Pages */}
+    <Route path="/pages/:pageKey" element={<StaticPage />} />
   </Routes>
 );
 

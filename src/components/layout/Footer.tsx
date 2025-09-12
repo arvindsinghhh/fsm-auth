@@ -57,33 +57,23 @@ const Footer: React.FC = () => {
             </Box>
           </Box>
           <Box>
-            <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr 1fr', sm: '1fr 1fr 1fr' } }}>
+            <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr 1fr', sm: '1fr 1fr' } }}>
               <Box>
                 <Typography variant="h6" color="text.primary" gutterBottom>
                   Company
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'column', '& > a': { mt: 1 } }}>
-                  <Link component={RouterLink} to="/about-us" color="text.secondary">
+                  <Link component={RouterLink} to="/pages/about-us" color="text.secondary">
                     About Us
                   </Link>
-                  <Link component={RouterLink} to="/contact" color="text.secondary">
-                    Contact
+                  <Link component={RouterLink} to="/pages/contact-us" color="text.secondary">
+                    Contact Us
                   </Link>
-                </Box>
-              </Box>
-              <Box>
-                <Typography variant="h6" color="text.primary" gutterBottom>
-                  Services
-                </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', '& > a': { mt: 1 } }}>
-                  <Link component={RouterLink} to="/services/field" color="text.secondary">
-                    Field Service
+                  <Link component={RouterLink} to="/pages/help-support" color="text.secondary">
+                    Help & Support
                   </Link>
-                  <Link component={RouterLink} to="/services/scheduling" color="text.secondary">
-                    Scheduling
-                  </Link>
-                  <Link component={RouterLink} to="/services/reporting" color="text.secondary">
-                    Reporting
+                  <Link component={RouterLink} to="/pages/faq" color="text.secondary">
+                    FAQ
                   </Link>
                 </Box>
               </Box>
@@ -92,14 +82,11 @@ const Footer: React.FC = () => {
                   Legal
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'column', '& > a': { mt: 1 } }}>
-                  <Link component={RouterLink} to="/privacy" color="text.secondary">
+                  <Link component={RouterLink} to="/pages/privacy-policy" color="text.secondary">
                     Privacy Policy
                   </Link>
-                  <Link component={RouterLink} to="/terms" color="text.secondary">
-                    Terms of Use
-                  </Link>
-                  <Link component={RouterLink} to="/cookies" color="text.secondary">
-                    Cookie Policy
+                  <Link component={RouterLink} to="/pages/terms-conditions" color="text.secondary">
+                    Terms & Conditions
                   </Link>
                 </Box>
               </Box>
@@ -112,13 +99,13 @@ const Footer: React.FC = () => {
             © {new Date().getFullYear()} FSM Admin. All rights reserved.
           </Typography>
           <Box sx={{ mt: { xs: 2, sm: 0 } }}>
-            <Link component={RouterLink} to="/privacy" color="text.secondary" sx={{ mr: 2 }}>
+            <Link component={RouterLink} to="/pages/privacy-policy" color="text.secondary" sx={{ mr: 2 }}>
               Privacy
             </Link>
-            <Link component={RouterLink} to="/terms" color="text.secondary" sx={{ mr: 2 }}>
+            <Link component={RouterLink} to="/pages/terms-conditions" color="text.secondary" sx={{ mr: 2 }}>
               Terms
             </Link>
-            <Link component={RouterLink} to="/cookies" color="text.secondary">
+            <Link component={RouterLink} to="/pages/privacy-policy#cookies" color="text.secondary">
               Cookies
             </Link>
           </Box>
