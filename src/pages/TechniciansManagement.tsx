@@ -41,11 +41,23 @@ const TechniciansManagement: React.FC = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const loadTechnicians = useCallback(() => {
+  const loadTechnicians = useCallback(async () => {
     setLoading(true);
-    fetchTechnicians({ search, status, from: dateRange.from, to: dateRange.to })
-      .then(data => setTechnicians(data.technicians || []))
-      .finally(() => setLoading(false));
+    try {
+      const data = await fetchTechnicians({ 
+        search, 
+        status, 
+        from: dateRange.from, 
+        to: dateRange.to 
+      });
+      if (data && data.technicians) {
+        setTechnicians(data.technicians);
+      }
+    } catch (error) {
+      console.error('Failed to load technicians:', error);
+    } finally {
+      setLoading(false);
+    }
   }, [search, status, dateRange]);
 
   useEffect(() => {

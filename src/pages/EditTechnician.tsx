@@ -29,32 +29,30 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
     const loadTechnician = async () => {
       try {
         setLoading(true);
-        // Create a base form data with required fields
-        const baseFormData = {
-          name: '',
-          email: '',
-          mobile: '',
-          status: 'Active' as const,
-          address: ''
-        };
-
-        try {
-          const data = await fetchTechnicianDetail(technicianId);
-          setFormData({
-            ...baseFormData,
-            ...data.technician,
-            // Ensure required fields have values even if API doesn't return them
-            name: data.technician?.name || '',
-            email: data.technician?.email || '',
-            mobile: data.technician?.mobile || '',
-            status: data.technician?.status || 'Active',
-            address: data.technician?.address || ''
-          });
-        } catch (apiError) {
-          console.error('API Error:', apiError);
-          setFormData(baseFormData);
+        const response = await fetchTechnicianDetail(technicianId);
+        const technicianData = response.technician;
+        
+        if (!technicianData) {
+          throw new Error('Technician not found');
         }
+
+        setFormData({
+          name: technicianData.name,
+          email: technicianData.email,
+          mobile: technicianData.mobile,
+          status: technicianData.status,
+          address: technicianData.address || '',
+          // Include other fields that might be needed
+          profileImage: technicianData.profileImage,
+          availability: technicianData.availability,
+          assignedLeads: technicianData.assignedLeads,
+          completedJobs: technicianData.completedJobs,
+          rating: technicianData.rating,
+          totalFeedbacks: technicianData.totalFeedbacks,
+          activeJobsCount: technicianData.activeJobsCount
+        });
       } catch (err) {
+        console.error('Failed to load technician:', err);
         setError('Failed to load technician details');
       } finally {
         setLoading(false);

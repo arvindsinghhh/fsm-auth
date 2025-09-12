@@ -1,26 +1,15 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import {
-  AppBar,
-   Box,
-  Button,
+  Box,
   Card,
   CardContent,
   Container,
-  Drawer,
-  IconButton,
-  Toolbar,
   Typography,
-  useMediaQuery,
   useTheme
 } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import {
-  ExitToApp,
-  Menu as MenuIcon,
-  AttachMoney
-} from '@mui/icons-material';
+import { AttachMoney } from '@mui/icons-material';
 import {
   BarChart,
   Bar,
@@ -77,25 +66,12 @@ const mockData = {
 };
 
 export const Dashboard = () => {
-  const { user, logout } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [metrics] = useState<DashboardMetrics>(mockData.metrics);
   const [jobsByType] = useState<JobsByType[]>(mockData.jobsByType);
   const [jobsByLocation] = useState<JobsByLocation[]>(mockData.jobsByLocation);
-
-  const handleLogout = () => {
-    logout();
-    toast.success('Logged out successfully');
-  };
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
