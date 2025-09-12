@@ -141,15 +141,28 @@ const AddTechnician: React.FC<AddTechnicianProps> = ({ onSuccess, onCancel }) =>
             variant="outlined"
             onClick={onCancel}
             disabled={loading}
+            sx={{ 
+              color: '#546FFF',
+              borderColor: '#546FFF',
+              '&:hover': {
+                borderColor: '#7C91FF',
+                color: '#7C91FF',
+              }
+            }}
           >
             Cancel
           </Button>
           <Button
             type="submit"
             variant="contained"
-            color="primary"
             disabled={loading}
             startIcon={loading ? <CircularProgress size={20} /> : null}
+            sx={{ 
+              bgcolor: '#546FFF',
+              '&:hover': {
+                bgcolor: '#7C91FF',
+              }
+            }}
           >
             Add Technician
           </Button>

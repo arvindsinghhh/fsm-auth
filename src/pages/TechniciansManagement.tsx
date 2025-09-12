@@ -175,7 +175,13 @@ const TechniciansManagement: React.FC = () => {
               color="primary"
               fullWidth
               onClick={() => setIsAddModalOpen(true)}
-              sx={{ height: '40px' }}
+              sx={{ 
+                height: '40px',
+                bgcolor: '#546FFF',
+                '&:hover': {
+                  bgcolor: '#7C91FF',
+                }
+              }}
             >
               Add Technician
             </Button>
@@ -214,41 +220,48 @@ const TechniciansManagement: React.FC = () => {
                       <Button
                         size="small"
                         variant="outlined"
+                        sx={{ 
+                          mr: 1,
+                          color: '#546FFF',
+                          borderColor: '#546FFF',
+                          '&:hover': {
+                            borderColor: '#7C91FF',
+                            color: '#7C91FF',
+                          }
+                        }}
                         onClick={() => {
                           // Create dummy data for viewing
-                          setSelectedTechnician({
+                          const dummyLead = {
+                            id: 'JOB001',
+                            title: 'AC Repair',
+                            customerName: 'John Doe',
+                            status: 'In Progress' as const,
+                            date: '2025-09-12'
+                          };
+                          const dummyLead2 = {
+                            id: 'JOB002',
+                            title: 'Electrical Maintenance',
+                            customerName: 'Jane Smith',
+                            status: 'Completed' as const,
+                            date: '2025-09-10',
+                            customerFeedback: {
+                              rating: 5,
+                              comment: 'Excellent service, very professional',
+                              date: '2025-09-10'
+                            }
+                          };
+                          const viewData: Technician = {
                             ...tech,
-                            availability: 'Available' as const,
+                            availability: 'Available',
                             activeJobsCount: 3,
                             completedJobs: 45,
                             rating: 4.5,
                             totalFeedbacks: 38,
-                            assignedLeads: [
-                              {
-                                id: 'JOB001',
-                                title: 'AC Repair',
-                                customerName: 'John Doe',
-                                status: 'In Progress' as const,
-                                date: '2025-09-12',
-                                customerFeedback: undefined
-                              },
-                              {
-                                id: 'JOB002',
-                                title: 'Electrical Maintenance',
-                                customerName: 'Jane Smith',
-                                status: 'Completed' as const,
-                                date: '2025-09-10',
-                                customerFeedback: {
-                                  rating: 5,
-                                  comment: 'Excellent service, very professional',
-                                  date: '2025-09-10'
-                                }
-                              }
-                            ]
-                          });
+                            assignedLeads: [dummyLead, dummyLead2]
+                          };
+                          setSelectedTechnician(viewData);
                           setIsEditModalOpen(false);
                         }}
-                        sx={{ mr: 1 }}
                       >
                         View
                       </Button>

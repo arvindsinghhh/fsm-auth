@@ -206,9 +206,9 @@ export const Signup = () => {
               mt: 3, 
               mb: 2,
               py: 1.5,
-              background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+              bgcolor: '#546FFF',
               '&:hover': {
-                background: 'linear-gradient(45deg, #1976D2 30%, #00BCD4 90%)',
+                bgcolor: '#7C91FF',
               }
             }}
             disabled={isLoading}
@@ -222,7 +222,14 @@ export const Signup = () => {
 
           <Box sx={{ textAlign: 'center', mt: 2 }}>
             <Link to="/login" style={{ textDecoration: 'none' }}>
-              <Button color="primary">
+              <Button 
+                sx={{ 
+                  color: '#546FFF',
+                  '&:hover': {
+                    color: '#7C91FF',
+                  }
+                }}
+              >
                 Already have an account? Sign in
               </Button>
             </Link>

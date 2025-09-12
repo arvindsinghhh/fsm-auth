@@ -16,14 +16,14 @@ import AppRoutes from './routes';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#2196F3',
-      light: '#64B5F6',
-      dark: '#1976D2',
+      main: '#546FFF',
+      light: '#7C91FF',
+      dark: '#4559CC',
     },
     secondary: {
-      main: '#FF4081',
-      light: '#FF80AB',
-      dark: '#F50057',
+      main: '#7C91FF',
+      light: '#A3B2FF',
+      dark: '#546FFF',
     },
     background: {
       default: '#F5F5F5',

@@ -127,9 +127,9 @@ export const Login = () => {
               mt: 3, 
               mb: 2,
               py: 1.5,
-              background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+              bgcolor: '#546FFF',
               '&:hover': {
-                background: 'linear-gradient(45deg, #1976D2 30%, #00BCD4 90%)',
+                bgcolor: '#7C91FF',
               }
             }}
             disabled={isLoading}
@@ -143,12 +143,26 @@ export const Login = () => {
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
             <Link to="/forgot-password" style={{ textDecoration: 'none' }}>
-              <Button color="primary">
+              <Button 
+                sx={{ 
+                  color: '#546FFF',
+                  '&:hover': {
+                    color: '#7C91FF',
+                  }
+                }}
+              >
                 Forgot password?
               </Button>
             </Link>
             <Link to="/signup" style={{ textDecoration: 'none' }}>
-              <Button color="primary">
+              <Button
+                sx={{ 
+                  color: '#546FFF',
+                  '&:hover': {
+                    color: '#7C91FF',
+                  }
+                }}
+              >
                 Create an account
               </Button>
             </Link>

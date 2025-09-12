@@ -186,11 +186,21 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 </Typography>
               </MenuItem>
               <Divider />
-              <MenuItem onClick={handleLogout}>
-                <ListItemIcon>
+              <MenuItem 
+                onClick={handleLogout}
+                sx={{
+                  '&:hover': {
+                    color: '#7C91FF',
+                    '& .MuiListItemIcon-root': {
+                      color: '#7C91FF',
+                    }
+                  }
+                }}
+              >
+                <ListItemIcon sx={{ color: '#546FFF' }}>
                   <ExitToApp fontSize="small" />
                 </ListItemIcon>
-                <ListItemText primary="Logout" />
+                <ListItemText primary="Logout" sx={{ color: '#546FFF' }} />
               </MenuItem>
             </Menu>
           </Box>
