@@ -20,7 +20,7 @@ import {
 import { Menu as MenuIcon, ChevronLeft, ExitToApp } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { managers, SidebarItem } from '../Managers';
-import Footer from './Footer';
+// import Footer from './Footer';
 
 const DRAWER_WIDTH = 280;
 
@@ -230,7 +230,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </Box>
 
         {/* Footer */}
-        <Footer />
+        {/* <Footer /> */}
       </Box>
     </Box>
   );
