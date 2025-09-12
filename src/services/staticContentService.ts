@@ -23,6 +23,8 @@ export interface StaticContentListRequest {
     shortingField?: string;
     asc?: boolean;
     active?: boolean;
+    from?: string;
+    to?: string;
 }
 
 export interface StaticContentListResponse {
