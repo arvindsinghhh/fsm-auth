@@ -23,8 +23,6 @@ interface TechnicianFormData {
   mobile: string;
   status: 'Active' | 'Inactive';
   address: string;
-  specialization: string;
-  experience: string;
   joinDate: string;
 }
 
@@ -38,8 +36,6 @@ const AddTechnician: React.FC = () => {
     mobile: '',
     status: 'Active',
     address: '',
-    specialization: '',
-    experience: '',
     joinDate: new Date().toISOString().split('T')[0]
   });
 
@@ -152,25 +148,6 @@ const AddTechnician: React.FC = () => {
                   value={formData.address}
                   onChange={handleInputChange}
                 />
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
-                  <TextField
-                    fullWidth
-                    label="Specialization"
-                    name="specialization"
-                    value={formData.specialization}
-                    onChange={handleInputChange}
-                    helperText="e.g., Electrical, Plumbing, HVAC"
-                  />
-                  <TextField
-                    fullWidth
-                    label="Experience (years)"
-                    name="experience"
-                    type="number"
-                    value={formData.experience}
-                    onChange={handleInputChange}
-                    inputProps={{ min: 0 }}
-                  />
-                </Box>
                 <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
                   <TextField
                     fullWidth

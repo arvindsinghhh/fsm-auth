@@ -20,9 +20,6 @@ interface TechnicianFormData {
   mobile: string;
   status: 'Active' | 'Inactive';
   address: string;
-  specialization: string;
-  experience: string;
-  joinDate: string;
 }
 
 interface AddTechnicianProps {
@@ -38,10 +35,7 @@ const AddTechnician: React.FC<AddTechnicianProps> = ({ onSuccess, onCancel }) =>
     email: '',
     mobile: '',
     status: 'Active',
-    address: '',
-    specialization: '',
-    experience: '',
-    joinDate: new Date().toISOString().split('T')[0]
+    address: ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -141,40 +135,6 @@ const AddTechnician: React.FC<AddTechnicianProps> = ({ onSuccess, onCancel }) =>
           value={formData.address}
           onChange={handleInputChange}
         />
-
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
-          <TextField
-            fullWidth
-            label="Specialization"
-            name="specialization"
-            value={formData.specialization}
-            onChange={handleInputChange}
-            helperText="e.g., Electrical, Plumbing, HVAC"
-          />
-          <TextField
-            fullWidth
-            label="Experience (years)"
-            name="experience"
-            type="number"
-            value={formData.experience}
-            onChange={handleInputChange}
-            inputProps={{ min: 0 }}
-          />
-        </Box>
-
-        <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
-          <TextField
-            fullWidth
-            label="Join Date"
-            name="joinDate"
-            type="date"
-            value={formData.joinDate}
-            onChange={handleInputChange}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Box>
 
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
           <Button
