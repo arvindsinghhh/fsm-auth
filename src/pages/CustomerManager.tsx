@@ -163,13 +163,11 @@ const CustomerManager: React.FC = () => {
             />
           </Box>
 
-          <Box sx={{ flex: '1 1 auto', minWidth: '150px' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flex: '1 1 auto', minWidth: '150px' }}>
             <Button
               variant="contained"
               color="primary"
-              fullWidth
               onClick={() => setIsAddModalOpen(true)}
-              sx={{ height: '40px' }}
             >
               Add Customer
             </Button>
@@ -180,14 +178,14 @@ const CustomerManager: React.FC = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Customer ID</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Mobile</TableCell>
-                <TableCell>Address</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Registered On</TableCell>
-                <TableCell>Actions</TableCell>
+                <TableCell sx={{ width: '10%' }}>Customer ID</TableCell>
+                <TableCell sx={{ width: '15%' }}>Name</TableCell>
+                <TableCell sx={{ width: '15%' }}>Email</TableCell>
+                <TableCell sx={{ width: '12%' }}>Mobile</TableCell>
+                <TableCell sx={{ width: '15%' }}>Address</TableCell>
+                <TableCell sx={{ width: '8%' }}>Status</TableCell>
+                <TableCell sx={{ width: '12%' }}>Registered On</TableCell>
+                <TableCell sx={{ width: '13%' }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

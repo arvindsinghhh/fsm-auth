@@ -1,8 +1,3 @@
-import axios from 'axios';
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
-console.log('API_BASE_URL:', API_BASE_URL); // This will show the actual URL being used
-
 export interface StaticContent {
     id: number | null;
     title: string;
@@ -34,10 +29,6 @@ export interface StaticContentListResponse {
     pageNumber: number;
     pageSize: number;
 }
-
-const headers = {
-    userName: 'testadmin@fsm.com'
-};
 
 export const staticContentService = {
     // In-memory storage

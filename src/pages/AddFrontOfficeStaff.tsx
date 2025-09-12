@@ -102,7 +102,7 @@ const AddFrontOfficeStaff: React.FC<AddFrontOfficeStaffProps> = ({ onSuccess, on
           />
         </Box>
 
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 3 }}>
           <Button
             variant="outlined"
             onClick={onCancel}

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
     Box,
-    Paper,
     Table,
     TableBody,
     TableCell,
@@ -13,7 +12,6 @@ import {
     IconButton,
     Typography,
     TextField,
-    Button,
     Chip,
     Dialog,
     DialogActions,
@@ -21,19 +19,19 @@ import {
     DialogContentText,
     DialogTitle,
     CircularProgress,
-    Card,
     CardContent,
     Select,
     MenuItem,
     Divider
 } from '@mui/material';
 import { 
-    Add as AddIcon, 
     Edit as EditIcon, 
     Delete as DeleteIcon, 
     Visibility as ViewIcon,
-    Close as CloseIcon 
+    Close as CloseIcon
 } from '@mui/icons-material';
+import CustomCard from '../components/common/CustomCard';
+import CustomButton from '../components/common/CustomButton';
 import { staticContentService, StaticContent, StaticContentListRequest } from '../services/staticContentService';
 
 const StaticContentList: React.FC = () => {
@@ -78,7 +76,7 @@ const StaticContentList: React.FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [page, rowsPerPage, searchText]);
+    }, [page, rowsPerPage, searchText, dateRange.from, dateRange.to]);
 
     useEffect(() => {
         fetchContents();
@@ -165,9 +163,9 @@ const StaticContentList: React.FC = () => {
     };
 
     return (
-        <Card sx={{ maxWidth: '100%', margin: 'auto', mt: 2, boxShadow: 3 }}>
+        <CustomCard glassy hoverable sx={{ maxWidth: '100%', margin: 'auto', mt: 2 }}>
             <CardContent>
-                <Typography variant="h5" gutterBottom>Static Content Management</Typography>
+                <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>Static Content Management</Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 2 }}>
                     <Box sx={{ flex: '1 1 30%' }}>
                         <TextField
@@ -214,9 +212,8 @@ const StaticContentList: React.FC = () => {
                         />
                     </Box>
                     <Box sx={{ flex: '1 1 15%' }}>
-                        <Button
-                            variant="contained"
-                            color="primary"
+                        <CustomButton
+                            buttonType="primary"
                             fullWidth
                             onClick={() => {
                                 setSelectedContent({
@@ -230,16 +227,9 @@ const StaticContentList: React.FC = () => {
                                 });
                                 setIsAddModalOpen(true);
                             }}
-                            sx={{ 
-                                height: '40px',
-                                bgcolor: '#546FFF',
-                                '&:hover': {
-                                    bgcolor: '#7C91FF',
-                                }
-                            }}
                         >
                             Add Content
-                        </Button>
+                        </CustomButton>
                     </Box>
                 </Box>
 
@@ -301,38 +291,30 @@ const StaticContentList: React.FC = () => {
                                     </TableCell>
                                     <TableCell>
                                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-                                            <Button
+                                            <CustomButton
+                                                buttonType="view"
                                                 size="small"
-                                                variant="outlined"
-                                                sx={{ 
-                                                    color: '#546FFF',
-                                                    borderColor: '#546FFF',
-                                                    '&:hover': {
-                                                        borderColor: '#7C91FF',
-                                                        color: '#7C91FF',
-                                                    }
-                                                }}
                                                 onClick={() => handleOpenView(content)}
                                                 startIcon={<ViewIcon />}
                                             >
                                                 View
-                                            </Button>
-                                            <Button
+                                            </CustomButton>
+                                            <CustomButton
+                                                buttonType="primary"
                                                 size="small"
-                                                variant="contained"
-                                                color="secondary"
                                                 onClick={() => handleOpenEdit(content)}
                                                 startIcon={<EditIcon />}
                                             >
                                                 Edit
-                                            </Button>
-                                            <IconButton
+                                            </CustomButton>
+                                            <CustomButton
+                                                buttonType="error"
                                                 size="small"
-                                                color="error"
+                                                sx={{ minWidth: 0, width: 40, px: 0 }}
                                                 onClick={() => content.id && handleDeleteClick(content.id)}
                                             >
                                                 <DeleteIcon />
-                                            </IconButton>
+                                            </CustomButton>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -435,8 +417,8 @@ const StaticContentList: React.FC = () => {
                                         }}
                                         placeholder="Add keyword"
                                     />
-                                    <Button
-                                        variant="contained"
+                                    <CustomButton
+                                        buttonType="primary"
                                         size="small"
                                         onClick={() => {
                                             if (keywordInput.trim() && selectedContent) {
@@ -449,7 +431,7 @@ const StaticContentList: React.FC = () => {
                                         }}
                                     >
                                         Add
-                                    </Button>
+                                    </CustomButton>
                                 </Box>
                                 <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
                                     {selectedContent?.metaKeywords.map((keyword, index) => (
@@ -467,14 +449,18 @@ const StaticContentList: React.FC = () => {
                         </Box>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseModals}>Cancel</Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
+                        <CustomButton 
+                            buttonType="secondary"
+                            onClick={handleCloseModals}
+                        >
+                            Cancel
+                        </CustomButton>
+                        <CustomButton
+                            buttonType="primary"
                             onClick={() => selectedContent && handleSave(selectedContent)}
                         >
                             {isEditModalOpen ? 'Update' : 'Create'}
-                        </Button>
+                        </CustomButton>
                     </DialogActions>
                     {error && (
                         <Box sx={{ p: 2, color: 'error.main', textAlign: 'center' }}>
@@ -606,10 +592,14 @@ const StaticContentList: React.FC = () => {
                         )}
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleCloseModals}>Close</Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
+                        <CustomButton 
+                            buttonType="secondary"
+                            onClick={handleCloseModals}
+                        >
+                            Close
+                        </CustomButton>
+                        <CustomButton
+                            buttonType="primary"
                             onClick={() => {
                                 handleCloseModals();
                                 if (selectedContent) {
@@ -618,7 +608,7 @@ const StaticContentList: React.FC = () => {
                             }}
                         >
                             Edit
-                        </Button>
+                        </CustomButton>
                     </DialogActions>
                 </Dialog>
 
@@ -631,14 +621,22 @@ const StaticContentList: React.FC = () => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-                        <Button onClick={handleDeleteConfirm} color="error">
+                        <CustomButton 
+                            buttonType="secondary"
+                            onClick={() => setDeleteDialogOpen(false)}
+                        >
+                            Cancel
+                        </CustomButton>
+                        <CustomButton 
+                            buttonType="error"
+                            onClick={handleDeleteConfirm}
+                        >
                             Delete
-                        </Button>
+                        </CustomButton>
                     </DialogActions>
                 </Dialog>
             </CardContent>
-        </Card>
+        </CustomCard>
     );
 };
 

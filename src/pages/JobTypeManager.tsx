@@ -126,38 +126,40 @@ const JobTypeManager: React.FC = () => {
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        onClick={() => {
-                          setSelectedJobType(jobType);
-                          setIsViewModalOpen(true);
-                        }}
-                        sx={{ mr: 1 }}
-                      >
-                        View
-                      </Button>
-                      <IconButton
-                        color="primary"
-                        onClick={() => {
-                          setSelectedJobType(jobType);
-                          setIsEditModalOpen(true);
-                        }}
-                        size="small"
-                        sx={{ mr: 1 }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        color="error"
-                        onClick={() => {
-                          setSelectedJobType(jobType);
-                          setIsDeleteModalOpen(true);
-                        }}
-                        size="small"
-                      >
-                        <DeleteIcon />
-                      </IconButton>
+                      <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          onClick={() => {
+                            setSelectedJobType(jobType);
+                            setIsViewModalOpen(true);
+                          }}
+                        >
+                          View
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          onClick={() => {
+                            setSelectedJobType(jobType);
+                            setIsEditModalOpen(true);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          size="small"
+                          onClick={() => {
+                            setSelectedJobType(jobType);
+                            setIsDeleteModalOpen(true);
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))

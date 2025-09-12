@@ -181,19 +181,11 @@ const TechniciansManagement: React.FC = () => {
               size="small"
             />
           </Box>
-          <Box sx={{ flex: '1 1 15%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flex: '1 1 auto' }}>
             <Button
               variant="contained"
               color="primary"
-              fullWidth
               onClick={() => setIsAddModalOpen(true)}
-              sx={{ 
-                height: '40px',
-                bgcolor: '#546FFF',
-                '&:hover': {
-                  bgcolor: '#7C91FF',
-                }
-              }}
             >
               Add Technician
             </Button>
@@ -229,95 +221,88 @@ const TechniciansManagement: React.FC = () => {
                     <TableCell>{tech.assignedLeads?.length || 0}</TableCell>
                     <TableCell>{new Date().toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        sx={{ 
-                          mr: 1,
-                          color: '#546FFF',
-                          borderColor: '#546FFF',
-                          '&:hover': {
-                            borderColor: '#7C91FF',
-                            color: '#7C91FF',
-                          }
-                        }}
-                        onClick={() => {
-                          // Create dummy data for viewing
-                          const dummyLead = {
-                            id: 'JOB001',
-                            title: 'AC Repair',
-                            customerName: 'John Doe',
-                            status: 'In Progress' as const,
-                            date: '2025-09-12'
-                          };
-                          const dummyLead2 = {
-                            id: 'JOB002',
-                            title: 'Electrical Maintenance',
-                            customerName: 'Jane Smith',
-                            status: 'Completed' as const,
-                            date: '2025-09-10',
-                            customerFeedback: {
-                              rating: 5,
-                              comment: 'Excellent service, very professional',
-                              date: '2025-09-10'
-                            }
-                          };
-                          const viewData: Technician = {
-                            ...tech,
-                            availability: 'Available',
-                            activeJobsCount: 3,
-                            completedJobs: 45,
-                            rating: 4.5,
-                            totalFeedbacks: 38,
-                            assignedLeads: [dummyLead, dummyLead2]
-                          };
-                          setSelectedTechnician(viewData);
-                          setIsEditModalOpen(false);
-                        }}
-                      >
-                        View
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => {
-                          // Create dummy data for editing
-                          setSelectedTechnician({
-                            ...tech,
-                            availability: 'Available' as const,
-                            activeJobsCount: 3,
-                            completedJobs: 45,
-                            rating: 4.5,
-                            totalFeedbacks: 38,
-                            assignedLeads: [
-                              {
-                                id: 'JOB001',
-                                title: 'AC Repair',
-                                customerName: 'John Doe',
-                                status: 'In Progress' as const,
-                                date: '2025-09-12',
-                                customerFeedback: undefined
-                              },
-                              {
-                                id: 'JOB002',
-                                title: 'Electrical Maintenance',
-                                customerName: 'Jane Smith',
-                                status: 'Completed' as const,
-                                date: '2025-09-10',
-                                customerFeedback: {
-                                  rating: 5,
-                                  comment: 'Excellent service, very professional',
-                                  date: '2025-09-10'
-                                }
+                      <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          onClick={() => {
+                            // Create dummy data for viewing
+                            const dummyLead = {
+                              id: 'JOB001',
+                              title: 'AC Repair',
+                              customerName: 'John Doe',
+                              status: 'In Progress' as const,
+                              date: '2025-09-12'
+                            };
+                            const dummyLead2 = {
+                              id: 'JOB002',
+                              title: 'Electrical Maintenance',
+                              customerName: 'Jane Smith',
+                              status: 'Completed' as const,
+                              date: '2025-09-10',
+                              customerFeedback: {
+                                rating: 5,
+                                comment: 'Excellent service, very professional',
+                                date: '2025-09-10'
                               }
-                            ]
-                          });
-                          setIsEditModalOpen(true);
-                        }}
-                      >
-                        Edit
-                      </Button>
+                            };
+                            const viewData: Technician = {
+                              ...tech,
+                              availability: 'Available',
+                              activeJobsCount: 3,
+                              completedJobs: 45,
+                              rating: 4.5,
+                              totalFeedbacks: 38,
+                              assignedLeads: [dummyLead, dummyLead2]
+                            };
+                            setSelectedTechnician(viewData);
+                            setIsEditModalOpen(false);
+                          }}
+                        >
+                          View
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            // Create dummy data for editing
+                            setSelectedTechnician({
+                              ...tech,
+                              availability: 'Available' as const,
+                              activeJobsCount: 3,
+                              completedJobs: 45,
+                              rating: 4.5,
+                              totalFeedbacks: 38,
+                              assignedLeads: [
+                                {
+                                  id: 'JOB001',
+                                  title: 'AC Repair',
+                                  customerName: 'John Doe',
+                                  status: 'In Progress' as const,
+                                  date: '2025-09-12',
+                                  customerFeedback: undefined
+                                },
+                                {
+                                  id: 'JOB002',
+                                  title: 'Electrical Maintenance',
+                                  customerName: 'Jane Smith',
+                                  status: 'Completed' as const,
+                                  date: '2025-09-10',
+                                  customerFeedback: {
+                                    rating: 5,
+                                    comment: 'Excellent service, very professional',
+                                    date: '2025-09-10'
+                                  }
+                                }
+                              ]
+                            });
+                            setIsEditModalOpen(true);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))

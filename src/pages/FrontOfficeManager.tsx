@@ -137,13 +137,11 @@ const FrontOfficeManager: React.FC = () => {
               size="small"
             />
           </Box>
-          <Box sx={{ flex: '1 1 15%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flex: '1 1 auto' }}>
             <Button
               variant="contained"
               color="primary"
-              fullWidth
               onClick={() => setIsAddModalOpen(true)}
-              sx={{ height: '40px' }}
             >
               Add Staff Member
             </Button>
@@ -186,25 +184,26 @@ const FrontOfficeManager: React.FC = () => {
                     </TableCell>
                     <TableCell>{member.joinDate}</TableCell>
                     <TableCell>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                          setSelectedStaff(member);
-                          setIsViewModalOpen(true);
-                        }}
-                        sx={{ mr: 1 }}
-                      >
-                        View
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => handleOpenEditModal(member.id)}
-                      >
-                        Edit
-                      </Button>
+                      <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          onClick={() => {
+                            setSelectedStaff(member);
+                            setIsViewModalOpen(true);
+                          }}
+                        >
+                          View
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleOpenEditModal(member.id)}
+                        >
+                          Edit
+                        </Button>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))
