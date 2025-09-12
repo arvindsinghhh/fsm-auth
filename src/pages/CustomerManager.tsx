@@ -216,29 +216,29 @@ const CustomerManager: React.FC = () => {
                     </TableCell>
                     <TableCell>{customer.registeredOn}</TableCell>
                     <TableCell onClick={e => e.stopPropagation()}>
-                      <Button
-                        size="small"
-                        variant="outlined"
-                        onClick={() => {
-                          setSelectedCustomer(customer);
-                          setIsJobsModalOpen(true);
-                        }}
-                        sx={{ mr: 1 }}
-                      >
-                        View
-                      </Button>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        onClick={() => {
-                          setSelectedCustomer(customer);
-                          setIsEditModalOpen(true);
-                        }}
-                        sx={{ mr: 1 }}
-                      >
-                        Edit
-                      </Button>
+                      <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          onClick={() => {
+                            setSelectedCustomer(customer);
+                            setIsJobsModalOpen(true);
+                          }}
+                        >
+                          View
+                        </Button>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="primary"
+                          onClick={() => {
+                            setSelectedCustomer(customer);
+                            setIsEditModalOpen(true);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                      </Box>
                     </TableCell>
                   </TableRow>
                 ))

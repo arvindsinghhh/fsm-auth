@@ -22,7 +22,8 @@ import {
     CardContent,
     Select,
     MenuItem,
-    Divider
+    Divider,
+    Button
 } from '@mui/material';
 import { 
     Edit as EditIcon, 
@@ -211,10 +212,10 @@ const StaticContentList: React.FC = () => {
                             size="small"
                         />
                     </Box>
-                    <Box sx={{ flex: '1 1 15%' }}>
-                        <CustomButton
-                            buttonType="primary"
-                            fullWidth
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', flex: '1 1 auto' }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
                             onClick={() => {
                                 setSelectedContent({
                                     id: null,
@@ -229,7 +230,7 @@ const StaticContentList: React.FC = () => {
                             }}
                         >
                             Add Content
-                        </CustomButton>
+                        </Button>
                     </Box>
                 </Box>
 
@@ -290,31 +291,30 @@ const StaticContentList: React.FC = () => {
                                         {new Date(content.updatedAt || '').toLocaleDateString()}
                                     </TableCell>
                                     <TableCell>
-                                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
-                                            <CustomButton
-                                                buttonType="view"
+                                        <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+                                            <Button
                                                 size="small"
+                                                variant="outlined"
                                                 onClick={() => handleOpenView(content)}
-                                                startIcon={<ViewIcon />}
                                             >
                                                 View
-                                            </CustomButton>
-                                            <CustomButton
-                                                buttonType="primary"
+                                            </Button>
+                                            <Button
                                                 size="small"
+                                                variant="contained"
+                                                color="primary"
                                                 onClick={() => handleOpenEdit(content)}
-                                                startIcon={<EditIcon />}
                                             >
                                                 Edit
-                                            </CustomButton>
-                                            <CustomButton
-                                                buttonType="error"
+                                            </Button>
+                                            <Button
                                                 size="small"
-                                                sx={{ minWidth: 0, width: 40, px: 0 }}
+                                                variant="contained"
+                                                color="error"
                                                 onClick={() => content.id && handleDeleteClick(content.id)}
                                             >
-                                                <DeleteIcon />
-                                            </CustomButton>
+                                                Delete
+                                            </Button>
                                         </Box>
                                     </TableCell>
                                 </TableRow>
@@ -449,18 +449,19 @@ const StaticContentList: React.FC = () => {
                         </Box>
                     </DialogContent>
                     <DialogActions>
-                        <CustomButton 
-                            buttonType="secondary"
+                        <Button 
+                            variant="outlined"
                             onClick={handleCloseModals}
                         >
                             Cancel
-                        </CustomButton>
-                        <CustomButton
-                            buttonType="primary"
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
                             onClick={() => selectedContent && handleSave(selectedContent)}
                         >
                             {isEditModalOpen ? 'Update' : 'Create'}
-                        </CustomButton>
+                        </Button>
                     </DialogActions>
                     {error && (
                         <Box sx={{ p: 2, color: 'error.main', textAlign: 'center' }}>
@@ -592,14 +593,15 @@ const StaticContentList: React.FC = () => {
                         )}
                     </DialogContent>
                     <DialogActions>
-                        <CustomButton 
-                            buttonType="secondary"
+                        <Button 
+                            variant="outlined"
                             onClick={handleCloseModals}
                         >
                             Close
-                        </CustomButton>
-                        <CustomButton
-                            buttonType="primary"
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
                             onClick={() => {
                                 handleCloseModals();
                                 if (selectedContent) {
@@ -608,7 +610,7 @@ const StaticContentList: React.FC = () => {
                             }}
                         >
                             Edit
-                        </CustomButton>
+                        </Button>
                     </DialogActions>
                 </Dialog>
 
@@ -621,18 +623,19 @@ const StaticContentList: React.FC = () => {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <CustomButton 
-                            buttonType="secondary"
+                        <Button 
+                            variant="outlined"
                             onClick={() => setDeleteDialogOpen(false)}
                         >
                             Cancel
-                        </CustomButton>
-                        <CustomButton 
-                            buttonType="error"
+                        </Button>
+                        <Button 
+                            variant="contained"
+                            color="error"
                             onClick={handleDeleteConfirm}
                         >
                             Delete
-                        </CustomButton>
+                        </Button>
                     </DialogActions>
                 </Dialog>
             </CardContent>
