@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import logo from '../../logo.svg';
 import {
   Box,
   Drawer,
@@ -62,7 +63,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           }}
           onClick={() => navigate('/dashboard')}
         >
-          <img src="/logo.svg" alt="FSM Logo" style={{ height: 40 }} />
+          <img src={logo} alt="FSM Logo" style={{ height: 40 }} />
         </Box>
         {isMobile && (
           <IconButton onClick={handleDrawerToggle}>
@@ -145,7 +146,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
                 }}
                 onClick={() => navigate('/dashboard')}
               >
-                <img src="/logo.svg" alt="FSM Logo" style={{ height: 32 }} />
+                <img src={logo} alt="FSM Logo" style={{ height: 32 }} />
               </Box>
             )}
             {isMobile && (
