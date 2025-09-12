@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchTechnicianDetail, editTechnician, blockTechnician, unblockTechnician, fetchLeadActions } from '../services/technicianService';
-import { Technician, Lead } from '../types/technician';
+import { Technician, TechnicianLead } from '../types/technician';
 
 const TechnicianDetail: React.FC = () => {
   const { id } = useParams();
   const [technician, setTechnician] = useState<Technician | null>(null);
-  const [leads, setLeads] = useState<Lead[]>([]);
+  const [leads, setLeads] = useState<TechnicianLead[]>([]);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<Partial<Technician>>({});
   const navigate = useNavigate();
@@ -48,8 +48,7 @@ const TechnicianDetail: React.FC = () => {
           <div>Status: {editing ? <select value={form.status || ''} onChange={e => setForm({ ...form, status: e.target.value as any })}><option value="Active">Active</option><option value="Inactive">Inactive</option></select> : technician.status}</div>
           <div>Availability: {technician.availability}</div>
           <div>Completed Jobs: {technician.completedJobs}</div>
-          <div>Join Date: {technician.joinDate}</div>
-          <div>
+           <div>
             {editing ? (
               <>
                 <button onClick={handleSave}>Save</button>
@@ -77,7 +76,12 @@ const TechnicianDetail: React.FC = () => {
                 <tr key={lead.id}>
                   <td>{lead.id}</td>
                   <td>{lead.status}</td>
-                  <td>{lead.customerFeedback}</td>
+                  <td>
+                    {lead.customerFeedback ? 
+                      `${lead.customerFeedback.rating}/5 - ${lead.customerFeedback.comment}` : 
+                      'No feedback yet'
+                    }
+                  </td>
                   <td><button onClick={async () => { const actions = await fetchLeadActions(lead.id); alert(JSON.stringify(actions)); }}>View Actions</button></td>
                 </tr>
               ))}

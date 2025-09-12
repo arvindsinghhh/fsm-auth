@@ -21,8 +21,13 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
+  Avatar,
+  Chip,
+  Paper,
+  Tooltip,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import CommentIcon from '@mui/icons-material/Comment';
 import AddTechnician from './AddTechnician';
 import EditTechnician from './EditTechnician';
 
@@ -51,7 +56,52 @@ const TechniciansManagement: React.FC = () => {
   const handleOpenEditModal = async (techId: string) => {
     try {
       const response = await fetchTechnicianDetail(techId);
-      setSelectedTechnician(response.technician);
+      // For now, using dummy data
+      const dummyTechnician: Technician = {
+        id: techId,
+        name: response?.technician?.name || 'Unknown',
+        email: response?.technician?.email || 'email@example.com',
+        mobile: response?.technician?.mobile || 'N/A',
+        status: (response?.technician?.status || 'Active') as 'Active' | 'Inactive',
+        address: response?.technician?.address || 'N/A',
+        profileImage: '',
+        availability: 'Available' as const,
+        activeJobsCount: 3,
+        completedJobs: 45,
+        rating: 4.5,
+        totalFeedbacks: 38,
+        assignedLeads: [
+          {
+            id: 'JOB001',
+            title: 'AC Repair',
+            customerName: 'John Doe',
+            status: 'In Progress' as const,
+            date: '2025-09-12',
+            customerFeedback: undefined
+          },
+          {
+            id: 'JOB002',
+            title: 'Electrical Maintenance',
+            customerName: 'Jane Smith',
+            status: 'Completed' as const,
+            date: '2025-09-10',
+            customerFeedback: {
+              rating: 5,
+              comment: 'Excellent service, very professional',
+              date: '2025-09-10'
+            }
+          },
+          {
+            id: 'JOB003',
+            title: 'Plumbing Work',
+            customerName: 'Mike Johnson',
+            status: 'Pending' as const,
+            date: '2025-09-13',
+            customerFeedback: undefined
+          }
+        ]
+      };
+      setSelectedTechnician(dummyTechnician);
       setIsEditModalOpen(true);
     } catch (error) {
       console.error('Failed to fetch technician details:', error);
@@ -158,14 +208,44 @@ const TechniciansManagement: React.FC = () => {
                     <TableCell>{tech.email}</TableCell>
                     <TableCell>{tech.mobile}</TableCell>
                     <TableCell>{tech.status}</TableCell>
-                    <TableCell>{tech.assignedLeads}</TableCell>
-                    <TableCell>{tech.joinDate}</TableCell>
+                    <TableCell>{tech.assignedLeads?.length || 0}</TableCell>
+                    <TableCell>{new Date().toLocaleDateString()}</TableCell>
                     <TableCell>
                       <Button
                         size="small"
                         variant="outlined"
                         onClick={() => {
-                          setSelectedTechnician(tech);
+                          // Create dummy data for viewing
+                          setSelectedTechnician({
+                            ...tech,
+                            availability: 'Available' as const,
+                            activeJobsCount: 3,
+                            completedJobs: 45,
+                            rating: 4.5,
+                            totalFeedbacks: 38,
+                            assignedLeads: [
+                              {
+                                id: 'JOB001',
+                                title: 'AC Repair',
+                                customerName: 'John Doe',
+                                status: 'In Progress' as const,
+                                date: '2025-09-12',
+                                customerFeedback: undefined
+                              },
+                              {
+                                id: 'JOB002',
+                                title: 'Electrical Maintenance',
+                                customerName: 'Jane Smith',
+                                status: 'Completed' as const,
+                                date: '2025-09-10',
+                                customerFeedback: {
+                                  rating: 5,
+                                  comment: 'Excellent service, very professional',
+                                  date: '2025-09-10'
+                                }
+                              }
+                            ]
+                          });
                           setIsEditModalOpen(false);
                         }}
                         sx={{ mr: 1 }}
@@ -244,10 +324,10 @@ const TechniciansManagement: React.FC = () => {
       <Dialog
         open={Boolean(selectedTechnician) && !isEditModalOpen}
         onClose={() => setSelectedTechnician(null)}
-        maxWidth="md"
+        maxWidth="lg"
         fullWidth
       >
-        <DialogTitle>
+        <DialogTitle sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
           Technician Details
           <IconButton
             onClick={() => setSelectedTechnician(null)}
@@ -258,57 +338,165 @@ const TechniciansManagement: React.FC = () => {
         </DialogTitle>
         <DialogContent>
           {selectedTechnician && (
-            <Box sx={{ 
-              py: 2,
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: 3,
-              '& .detail-item': {
+            <Box sx={{ py: 1 }}>
+              {/* Header Section */}
+              <Box sx={{ 
+                display: 'flex',
+                gap: 3,
+                mb: 4,
                 p: 2,
-                borderRadius: 1,
                 bgcolor: 'background.paper',
+                borderRadius: 1,
                 boxShadow: 1
-              }
-            }}>
-              <Box className="detail-item">
-                <Typography variant="overline" color="primary" gutterBottom>Personal Information</Typography>
-                <Typography variant="h6" gutterBottom>{selectedTechnician.name}</Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  {selectedTechnician.email}<br />
-                  {selectedTechnician.mobile}
-                </Typography>
-              </Box>
-              
-              <Box className="detail-item">
-                <Typography variant="overline" color="primary" gutterBottom>Status & Role</Typography>
-                <Typography variant="h6" gutterBottom>
-                  {selectedTechnician.status}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Assigned Leads: {selectedTechnician.assignedLeads || 0}
-                </Typography>
+              }}>
+                {/* Profile Picture */}
+                <Box sx={{ position: 'relative' }}>
+                  <Avatar
+                    src={selectedTechnician.profileImage || undefined}
+                    sx={{ width: 120, height: 120 }}
+                  >
+                    {selectedTechnician.name[0]}
+                  </Avatar>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      bottom: 0,
+                      right: 0,
+                      width: 24,
+                      height: 24,
+                      borderRadius: '50%',
+                      bgcolor: selectedTechnician.status === 'Active' ? 'success.main' : 'text.disabled',
+                      border: 2,
+                      borderColor: 'background.paper'
+                    }}
+                  />
+                </Box>
+
+                {/* Basic Info */}
+                <Box sx={{ flexGrow: 1 }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Box>
+                      <Typography variant="h5" gutterBottom>
+                        {selectedTechnician.name}
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary" gutterBottom>
+                        {selectedTechnician.email}
+                      </Typography>
+                      <Typography variant="body1" color="text.secondary">
+                        {selectedTechnician.mobile}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ textAlign: 'right' }}>
+                      <Chip
+                        label={selectedTechnician.availability}
+                        color={selectedTechnician.availability === 'Available' ? 'success' : 
+                               selectedTechnician.availability === 'On Job' ? 'warning' : 'default'}
+                        sx={{ mb: 1 }}
+                      />
+                      <Typography variant="body2" color="text.secondary">
+                        Status: {selectedTechnician.status}
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Box sx={{ mt: 2, display: 'flex', gap: 4 }}>
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">Active Jobs</Typography>
+                      <Typography variant="h6">{selectedTechnician.activeJobsCount}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">Completed Jobs</Typography>
+                      <Typography variant="h6">{selectedTechnician.completedJobs}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="subtitle2" color="text.secondary">Rating</Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="h6">{(selectedTechnician.rating || 0).toFixed(1)}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          ({selectedTechnician.totalFeedbacks || 0} reviews)
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
               </Box>
 
-              <Box className="detail-item">
-                <Typography variant="overline" color="primary" gutterBottom>Location</Typography>
-                <Typography variant="body1">{selectedTechnician.address || 'No address provided'}</Typography>
+              {/* Address Section */}
+              <Box sx={{ mb: 4 }}>
+                <Typography variant="h6" gutterBottom>Address</Typography>
+                <Paper sx={{ p: 2 }}>
+                  <Typography>{selectedTechnician.address}</Typography>
+                </Paper>
               </Box>
 
-              <Box className="detail-item">
-                <Typography variant="overline" color="primary" gutterBottom>Employment Details</Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                  Join Date: {selectedTechnician.joinDate}
-                </Typography>
-                {selectedTechnician.specialization && (
-                  <Typography variant="body2" color="text.secondary" gutterBottom>
-                    Specialization: {selectedTechnician.specialization}
-                  </Typography>
-                )}
-                {selectedTechnician.experience && (
-                  <Typography variant="body2" color="text.secondary">
-                    Experience: {selectedTechnician.experience} years
-                  </Typography>
-                )}
+              {/* Assigned Jobs Section */}
+              <Box sx={{ mb: 4 }}>
+                <Typography variant="h6" gutterBottom>Current Jobs & Leads</Typography>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Job ID</TableCell>
+                        <TableCell>Title</TableCell>
+                        <TableCell>Customer</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Feedback</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {(selectedTechnician.assignedLeads || []).map((lead) => (
+                        <TableRow key={lead.id}>
+                          <TableCell>{lead.id}</TableCell>
+                          <TableCell>{lead.title}</TableCell>
+                          <TableCell>{lead.customerName}</TableCell>
+                          <TableCell>
+                            <Chip
+                              label={lead.status}
+                              color={
+                                lead.status === 'Completed' ? 'success' :
+                                lead.status === 'In Progress' ? 'warning' :
+                                lead.status === 'Cancelled' ? 'error' : 'default'
+                              }
+                              size="small"
+                            />
+                          </TableCell>
+                          <TableCell>{lead.date}</TableCell>
+                          <TableCell>
+                            {lead.customerFeedback ? (
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Typography>{lead.customerFeedback.rating}/5</Typography>
+                                <Tooltip title={lead.customerFeedback.comment}>
+                                  <IconButton size="small">
+                                    <CommentIcon fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              </Box>
+                            ) : lead.status === 'Completed' ? (
+                              'Pending'
+                            ) : (
+                              '-'
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+
+              {/* Actions */}
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setSelectedTechnician(selectedTechnician);
+                    setIsEditModalOpen(true);
+                  }}
+                >
+                  Update Details
+                </Button>
               </Box>
             </Box>
           )}

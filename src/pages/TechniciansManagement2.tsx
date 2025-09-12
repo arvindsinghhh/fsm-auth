@@ -171,9 +171,7 @@ const TechnicianList: React.FC = () => {
                       <TableCell>{tech.email}</TableCell>
                       <TableCell>{tech.mobile}</TableCell>
                       <TableCell>{tech.status}</TableCell>
-                      <TableCell>{tech.assignedLeads || 0}</TableCell>
-                      <TableCell>{tech.joinDate}</TableCell>
-                      <TableCell>
+                        <TableCell>
                         <Button 
                           size="small" 
                           variant="outlined" 
@@ -285,9 +283,7 @@ const TechnicianList: React.FC = () => {
               <Typography variant="body1" gutterBottom>
                 <strong>Address:</strong> {selectedTechnician.address}
               </Typography>
-              <Typography variant="body1" gutterBottom>
-                <strong>Join Date:</strong> {selectedTechnician.joinDate}
-              </Typography>
+          
             </Box>
           )}
         </DialogContent>

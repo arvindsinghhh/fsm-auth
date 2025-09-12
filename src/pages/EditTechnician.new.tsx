@@ -147,7 +147,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
           onChange={handleInputChange}
         />
 
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+        {/* <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
           <TextField
             fullWidth
             label="Specialization"
@@ -165,9 +165,9 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
             onChange={handleInputChange}
             inputProps={{ min: 0 }}
           />
-        </Box>
+        </Box> */}
 
-        <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
+        {/* <Box sx={{ width: { xs: '100%', sm: '50%' } }}>
           <TextField
             fullWidth
             label="Join Date"
@@ -179,7 +179,7 @@ const EditTechnician: React.FC<EditTechnicianProps> = ({ technicianId, onSuccess
               shrink: true,
             }}
           />
-        </Box>
+        </Box> */}
 
         <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
           <Button
