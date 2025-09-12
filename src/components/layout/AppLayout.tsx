@@ -20,6 +20,7 @@ import {
 import { Menu as MenuIcon, ChevronLeft, ExitToApp } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { managers, SidebarItem } from '../Managers';
+import Footer from './Footer';
 
 const DRAWER_WIDTH = 280;
 
@@ -81,17 +82,52 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-          ml: { md: `${DRAWER_WIDTH}px` },
-          bgcolor: 'background.paper',
-          color: 'text.primary',
-        }}
-        elevation={1}
-      >
+    <Box sx={{ display: 'flex' }}>
+      {/* Sidebar */}
+      <Box component="nav" sx={{ width: { md: DRAWER_WIDTH }, flexShrink: { md: 0 } }}>
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{ keepMounted: true }}
+          sx={{
+            display: { xs: 'block', md: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DRAWER_WIDTH },
+          }}
+        >
+          {drawer}
+        </Drawer>
+
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', md: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DRAWER_WIDTH },
+          }}
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Box>
+
+      {/* Main Content Wrapper */}
+      <Box sx={{ 
+        flexGrow: 1, 
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+        {/* App Bar */}
+        <AppBar
+          position="fixed"
+          sx={{
+            width: { xs: '100%', md: `calc(100% - ${DRAWER_WIDTH}px)` },
+            ml: { md: `${DRAWER_WIDTH}px` },
+            bgcolor: 'background.paper',
+            color: 'text.primary',
+          }}
+          elevation={1}
+        >
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           {/* Left: Logo + Hamburger for mobile */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -180,17 +216,21 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </Drawer>
       </Box>
 
-      {/* Main Content */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-          mt: '64px',
-        }}
-      >
-        {children}
+        {/* Main Content */}
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: '100%',
+            mt: '64px',
+          }}
+        >
+          {children}
+        </Box>
+
+        {/* Footer */}
+        <Footer />
       </Box>
     </Box>
   );
