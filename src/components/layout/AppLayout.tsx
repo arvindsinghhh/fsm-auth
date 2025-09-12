@@ -53,14 +53,17 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const drawer = (
     <Box sx={{ overflow: 'auto' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', p: 2, justifyContent: 'space-between' }}>
-        <Typography
-          variant="h6"
-          noWrap
-          sx={{ cursor: 'pointer' }}
+        <Box 
+          sx={{ 
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1
+          }}
           onClick={() => navigate('/dashboard')}
         >
-          FSM Admin
-        </Typography>
+          <img src="/logo.svg" alt="FSM Logo" style={{ height: 40 }} />
+        </Box>
         {isMobile && (
           <IconButton onClick={handleDrawerToggle}>
             <ChevronLeft />
@@ -132,14 +135,18 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           {/* Left: Logo + Hamburger for mobile */}
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             {isMobile && (
-              <Typography
-                variant="h6"
-                noWrap
-                sx={{ cursor: 'pointer', mr: 1 }}
+              <Box 
+                sx={{ 
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  mr: 1
+                }}
                 onClick={() => navigate('/dashboard')}
               >
-                FSM Admin
-              </Typography>
+                <img src="/logo.svg" alt="FSM Logo" style={{ height: 32 }} />
+              </Box>
             )}
             {isMobile && (
               <IconButton
