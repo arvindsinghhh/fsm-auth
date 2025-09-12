@@ -65,8 +65,15 @@ export const ForgotPassword = () => {
             <Link to="/login" style={{ textDecoration: 'none' }}>
               <Button
                 variant="outlined"
-                color="primary"
                 fullWidth
+                sx={{ 
+                  color: '#546FFF',
+                  borderColor: '#546FFF',
+                  '&:hover': {
+                    color: '#7C91FF',
+                    borderColor: '#7C91FF'
+                  }
+                }}
               >
                 Return to login
               </Button>
@@ -110,9 +117,9 @@ export const ForgotPassword = () => {
               mt: 3, 
               mb: 2,
               py: 1.5,
-              background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+              bgcolor: '#546FFF',
               '&:hover': {
-                background: 'linear-gradient(45deg, #1976D2 30%, #00BCD4 90%)',
+                bgcolor: '#7C91FF',
               }
             }}
             disabled={isLoading}
@@ -126,7 +133,14 @@ export const ForgotPassword = () => {
 
           <Box sx={{ textAlign: 'center', mt: 2 }}>
             <Link to="/login" style={{ textDecoration: 'none' }}>
-              <Button color="primary">
+              <Button 
+                sx={{ 
+                  color: '#546FFF',
+                  '&:hover': {
+                    color: '#7C91FF',
+                  }
+                }}
+              >
                 Back to login
               </Button>
             </Link>

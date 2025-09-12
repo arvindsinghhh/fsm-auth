@@ -154,18 +154,7 @@ export const Login = () => {
                 Forgot password?
               </Button>
             </Link>
-            <Link to="/signup" style={{ textDecoration: 'none' }}>
-              <Button
-                sx={{ 
-                  color: '#546FFF',
-                  '&:hover': {
-                    color: '#7C91FF',
-                  }
-                }}
-              >
-                Create an account
-              </Button>
-            </Link>
+         
           </Box>
         </Box>
       </StyledPaper>
