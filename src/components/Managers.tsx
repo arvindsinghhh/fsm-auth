@@ -15,6 +15,7 @@ import StoreIcon from '@mui/icons-material/Store';
 import PaymentIcon from '@mui/icons-material/Payment';
 import SecurityIcon from '@mui/icons-material/Security';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import ArticleIcon from '@mui/icons-material/Article';
 
 interface ManagerItem {
   id: string;
@@ -66,6 +67,13 @@ export const managers: ManagerItem[] = [
     title: 'Job Type Manager',
     icon: <BuildIcon />,
     resource: 'job-type-manager',
+    requiredAction: 'read'
+  },
+  {
+    id: 'static-content',
+    title: 'Content Manager',
+    icon: <ArticleIcon />,
+    resource: 'static-content-manager',
     requiredAction: 'read'
   },
   

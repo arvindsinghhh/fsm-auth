@@ -8,6 +8,9 @@ import CustomerManager from '../pages/CustomerManager';
 import JobTypeManager from '../pages/JobTypeManager';
 import { Dashboard } from '../pages/Dashboard';
 import StaticPage from '../pages/StaticPage';
+import StaticContentList from '../pages/StaticContentList';
+import StaticContentForm from '../pages/StaticContentForm';
+import StaticContentView from '../pages/StaticContentView';
  
 const AppRoutes = () => (
   <Routes>
@@ -20,7 +23,13 @@ const AppRoutes = () => (
     <Route path="/leads/:leadId/actions" element={<LeadActions />} />
     <Route path="/dashboard" element={<Dashboard/>} />
     
-    {/* Static Pages */}
+    {/* Static Content Management */}
+    <Route path="/static-content" element={<StaticContentList />} />
+    <Route path="/static-content/add" element={<StaticContentForm />} />
+    <Route path="/static-content/edit/:id" element={<StaticContentForm />} />
+    <Route path="/static-content/view/:id" element={<StaticContentView />} />
+    
+    {/* Public Static Pages */}
     <Route path="/pages/:pageKey" element={<StaticPage />} />
   </Routes>
 );
